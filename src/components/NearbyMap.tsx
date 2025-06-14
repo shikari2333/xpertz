@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -351,7 +350,7 @@ const NearbyMap: React.FC = () => {
       </div>
 
       {/* Enhanced CSS Animations */}
-      <style jsx>{`
+      <style>{`
         .anm-layer1 {
           animation: pulse-ring-1 2s infinite ease-out;
         }
