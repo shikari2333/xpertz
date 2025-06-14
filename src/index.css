@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,5 +100,65 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations for the nearby map */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Nearby Map Specific Styles */
+.nearby-map {
+  position: relative;
+}
+
+.activity-node {
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.activity-node:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.tooltip {
+  transition: opacity 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nearby-map {
+    height: 600px;
+  }
+  
+  .tooltip {
+    width: 250px;
+    font-size: 0.875rem;
+  }
+  
+  .activity-node .text-sm {
+    font-size: 0.75rem;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .activity-node,
+  .path-line,
+  .animate-fade-in {
+    transition: none !important;
+    animation: none !important;
   }
 }
