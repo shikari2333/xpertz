@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -137,6 +136,29 @@
   transition: opacity 0.3s ease;
 }
 
+/* Activities Galore Specific Styles */
+.activities-galore {
+  position: relative;
+}
+
+.activities-galore .activity-node {
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.activities-galore .activity-node:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.activities-galore .activity-node:hover .tooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.activities-galore .tooltip {
+  transition: opacity 0.3s ease;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .nearby-map {
@@ -151,6 +173,15 @@
   .activity-node .text-sm {
     font-size: 0.75rem;
   }
+  
+  .activities-galore .tooltip {
+    width: 200px;
+    font-size: 0.875rem;
+  }
+  
+  .activities-galore .activity-node .text-sm {
+    font-size: 0.75rem;
+  }
 }
 
 /* Reduced motion preferences */
@@ -158,6 +189,13 @@
   .activity-node,
   .path-line,
   .animate-fade-in {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .activities-galore .activity-node,
+  .activities-galore .path-line,
+  .activities-galore .animate-fade-in {
     transition: none !important;
     animation: none !important;
   }

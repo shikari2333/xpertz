@@ -1,5 +1,6 @@
 
 import NearbyMap from '../components/NearbyMap';
+import ActivitiesGalore from '../components/ActivitiesGalore';
 
 const Index = () => {
   return (
@@ -15,6 +16,9 @@ const Index = () => {
 
       {/* Nearby Experiences Map */}
       <NearbyMap />
+
+      {/* Activities Galore Map */}
+      <ActivitiesGalore />
 
       {/* Additional content section */}
       <div className="py-16 px-4 text-center bg-white">
