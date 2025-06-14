@@ -53,7 +53,7 @@ const formatActivity = (
           className={`w-7 h-7 ${isNedum ? "filter invert brightness-0" : ""}`}
           loading="lazy"
         />
-        {/* Emerald dot for “You Are Here” */}
+        {/* Emerald dot for "You Are Here" */}
         {isNedum && (
           <span className="absolute -top-2 -right-2 w-4 h-4 bg-[#8B5E3C] rounded-full shadow-sm border-2 border-white" />
         )}
@@ -166,27 +166,69 @@ const NearbyMap: React.FC = () => {
             alt=""
             className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
           />
-          {/* Dotted Route: Thicker, animated */}
+          {/* Flowing Route: More natural path connecting all nodes */}
           <svg
             className="path-svg absolute inset-0 w-full h-full pointer-events-none"
             style={{ zIndex: 5 }}
+            viewBox="0 0 100 100"
           >
+            {/* Main flowing path that connects all destinations naturally */}
             <path
-              // Replace path below with your actual region path for best fit!
-              d="M180 120 Q 300 180 300 210 Q 300 270 240 330 Q 360 360 270 390 Q 270 450 300 480"
+              d="M 50 80 
+                 C 45 75, 35 70, 30 50
+                 C 25 30, 20 25, 30 20
+                 S 45 15, 50 35
+                 C 55 50, 65 45, 70 35
+                 C 75 25, 80 30, 75 50
+                 C 70 70, 60 75, 50 80"
               stroke="#8B5E3C"
-              strokeWidth="2.5"
-              strokeDasharray="7 7"
+              strokeWidth="0.4"
+              strokeDasharray="1.2 1.2"
               fill="none"
+              opacity="0.8"
             >
               <animate
                 attributeName="stroke-dashoffset"
-                values="20;0"
-                dur="2s"
+                values="4;0"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+            </path>
+            
+            {/* Additional connecting branches for a more organic look */}
+            <path
+              d="M 30 20 Q 25 15 35 10"
+              stroke="#8B5E3C"
+              strokeWidth="0.3"
+              strokeDasharray="0.8 0.8"
+              fill="none"
+              opacity="0.6"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="3;0"
+                dur="2.5s"
+                repeatCount="indefinite"
+              />
+            </path>
+            
+            <path
+              d="M 70 35 Q 85 30 80 20"
+              stroke="#8B5E3C"
+              strokeWidth="0.3"
+              strokeDasharray="0.8 0.8"
+              fill="none"
+              opacity="0.6"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="3;0"
+                dur="2.8s"
                 repeatCount="indefinite"
               />
             </path>
           </svg>
+          
           {/* Responsive Layout: Stacked on mobile */}
           {!isMobile ? (
             // Desktop: Absolute-positioned nodes
