@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -85,6 +84,15 @@ const NearbyMap: React.FC = () => {
         return { top: "45%", left: "20%" };
       default:
         return { top: "50%", left: "50%" };
+    }
+  };
+
+  const getVisualImage = (activityId: string) => {
+    switch (activityId) {
+      case "munnar":
+        return "/lovable-uploads/46590a92-9269-46ee-9ed8-4bbe8ade68af.png";
+      default:
+        return null;
     }
   };
 
@@ -175,7 +183,7 @@ const NearbyMap: React.FC = () => {
           Explore destinations around Nedumkandam
         </p>
         
-        <div className="relative w-full h-[800px] bg-gradient-to-br from-[#F5F3F1] via-[#F0EDE8] to-[#E8E6E3] rounded-3xl shadow-xl overflow-hidden border border-[#E0DDD8]">
+        <div className="relative w-full h-[900px] bg-gradient-to-br from-[#F5F3F1] via-[#F0EDE8] to-[#E8E6E3] rounded-3xl shadow-xl overflow-hidden border border-[#E0DDD8]">
           
           {/* Organic SVG Paths */}
           <svg
@@ -225,6 +233,8 @@ const NearbyMap: React.FC = () => {
           {/* Activity Nodes with Animations */}
           {activities.map((activity, index) => {
             const position = getNodePosition(activity.id);
+            const visualImage = getVisualImage(activity.id);
+            
             return (
               <div key={activity.id}>
                 {/* Visual Anchor Image */}
@@ -240,12 +250,20 @@ const NearbyMap: React.FC = () => {
                   }}
                 >
                   <div className="bg-white rounded-xl shadow-lg p-3 border border-[#E0DDD8]">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#F5F3F1] to-[#E8E6E3] rounded-lg mb-2 flex items-center justify-center">
-                      <img
-                        src={activity.icon}
-                        alt={activity.label}
-                        className="w-8 h-8"
-                      />
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#F5F3F1] to-[#E8E6E3] rounded-lg mb-2 flex items-center justify-center overflow-hidden">
+                      {visualImage ? (
+                        <img
+                          src={visualImage}
+                          alt={activity.label}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <img
+                          src={activity.icon}
+                          alt={activity.label}
+                          className="w-8 h-8"
+                        />
+                      )}
                     </div>
                     <p className="text-xs font-serif text-[#8B5E3C] text-center font-medium">
                       {activity.label}
