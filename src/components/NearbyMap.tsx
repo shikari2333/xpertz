@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -27,41 +28,64 @@ const NearbyMap: React.FC = () => {
   const generatePath = (destination: any) => {
     if (!nedumNode) return "";
     
-    const startX = parseFloat(nedumNode.left);
-    const startY = parseFloat(nedumNode.top);
-    const endX = parseFloat(destination.left);
-    const endY = parseFloat(destination.top);
+    // Use percentage-based coordinates for better responsiveness
+    const startX = 50; // Center position for Nedumkandam
+    const startY = 60;
     
-    // Create organic curves with different control points for each destination
-    let cp1x, cp1y, cp2x, cp2y;
+    let endX, endY, cp1x, cp1y, cp2x, cp2y;
     
     switch (destination.id) {
       case "munnar":
-        cp1x = startX - 100; cp1y = startY - 150;
-        cp2x = endX + 80; cp2y = endY + 100;
+        endX = 25; endY = 20;
+        cp1x = 35; cp1y = 30;
+        cp2x = 30; cp2y = 25;
         break;
       case "thekkady":
-        cp1x = startX + 120; cp1y = startY - 50;
-        cp2x = endX - 60; cp2y = endY - 80;
+        endX = 75; endY = 75;
+        cp1x = 65; cp1y = 65;
+        cp2x = 70; cp2y = 70;
         break;
       case "ramakkalmedu":
-        cp1x = startX + 60; cp1y = startY - 40;
-        cp2x = endX - 40; cp2y = endY + 20;
+        endX = 70; endY = 50;
+        cp1x = 60; cp1y = 55;
+        cp2x = 65; cp2y = 52;
         break;
       case "vagamon":
-        cp1x = startX - 80; cp1y = startY + 20;
-        cp2x = endX + 60; cp2y = endY - 60;
+        endX = 30; endY = 85;
+        cp1x = 40; cp1y = 70;
+        cp2x = 35; cp2y = 78;
         break;
       case "idukki-dam":
-        cp1x = startX - 150; cp1y = startY - 120;
-        cp2x = endX + 100; cp2y = endY + 60;
+        endX = 20; endY = 45;
+        cp1x = 35; cp1y = 50;
+        cp2x = 28; cp2y = 48;
         break;
       default:
+        endX = startX; endY = startY;
         cp1x = startX; cp1y = startY;
         cp2x = endX; cp2y = endY;
     }
     
     return `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
+  };
+
+  const getNodePosition = (activityId: string) => {
+    switch (activityId) {
+      case "nedum":
+        return { top: "60%", left: "50%" };
+      case "munnar":
+        return { top: "20%", left: "25%" };
+      case "thekkady":
+        return { top: "75%", left: "75%" };
+      case "ramakkalmedu":
+        return { top: "50%", left: "70%" };
+      case "vagamon":
+        return { top: "85%", left: "30%" };
+      case "idukki-dam":
+        return { top: "45%", left: "20%" };
+      default:
+        return { top: "50%", left: "50%" };
+    }
   };
 
   const handleNodeClick = (nodeId: string) => {
@@ -151,12 +175,13 @@ const NearbyMap: React.FC = () => {
           Explore destinations around Nedumkandam
         </p>
         
-        <div className="relative w-full h-[700px] bg-gradient-to-br from-[#F5F3F1] via-[#F0EDE8] to-[#E8E6E3] rounded-3xl shadow-xl overflow-hidden border border-[#E0DDD8]">
+        <div className="relative w-full h-[800px] bg-gradient-to-br from-[#F5F3F1] via-[#F0EDE8] to-[#E8E6E3] rounded-3xl shadow-xl overflow-hidden border border-[#E0DDD8]">
           
           {/* Organic SVG Paths */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
-            viewBox="0 0 1000 800"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
             style={{ zIndex: 1 }}
           >
             <defs>
@@ -164,8 +189,8 @@ const NearbyMap: React.FC = () => {
                 {`
                   .path-line {
                     stroke: #8B5E3C;
-                    stroke-width: 2.5;
-                    stroke-dasharray: 4 4;
+                    stroke-width: 0.3;
+                    stroke-dasharray: 1 1;
                     stroke-linecap: round;
                     fill: none;
                     opacity: 0.8;
@@ -173,13 +198,13 @@ const NearbyMap: React.FC = () => {
                   }
                   
                   @keyframes pathDraw {
-                    from { stroke-dashoffset: 100; opacity: 0; }
+                    from { stroke-dashoffset: 10; opacity: 0; }
                     to { stroke-dashoffset: 0; opacity: 0.8; }
                   }
                   
                   @keyframes pathFlow {
                     0%, 100% { stroke-dashoffset: 0; }
-                    50% { stroke-dashoffset: 8; }
+                    50% { stroke-dashoffset: 2; }
                   }
                 `}
               </style>
@@ -198,133 +223,136 @@ const NearbyMap: React.FC = () => {
           </svg>
 
           {/* Activity Nodes with Animations */}
-          {activities.map((activity, index) => (
-            <div key={activity.id}>
-              {/* Visual Anchor Image */}
-              <div
-                className={`absolute z-10 transition-all duration-700 ${
-                  animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                }`}
-                style={{
-                  top: `calc(${activity.top} - 60px)`,
-                  left: `calc(${activity.left} + 40px)`,
-                  transform: "translate(-50%, -50%)",
-                  transitionDelay: `${index * 200}ms`
-                }}
-              >
-                <div className="bg-white rounded-xl shadow-lg p-3 border border-[#E0DDD8]">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#F5F3F1] to-[#E8E6E3] rounded-lg mb-2 flex items-center justify-center">
-                    <img
-                      src={activity.icon}
-                      alt={activity.label}
-                      className="w-8 h-8"
-                    />
-                  </div>
-                  <p className="text-xs font-serif text-[#8B5E3C] text-center font-medium">
-                    {activity.label}
-                  </p>
-                </div>
-              </div>
-
-              {/* Interactive Node */}
-              <div
-                className={`absolute z-20 cursor-pointer transition-all duration-700 ${
-                  animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                }`}
-                style={{
-                  top: activity.top,
-                  left: activity.left,
-                  transform: "translate(-50%, -50%)",
-                  transitionDelay: `${index * 200 + 100}ms`
-                }}
-                onClick={() => handleNodeClick(activity.id)}
-                onMouseEnter={() => setActiveNode(activity.id)}
-                onMouseLeave={() => setActiveNode(null)}
-              >
-                {/* Pulsing Rings */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`anm-layer1 absolute rounded-full border-2 ${
-                    activity.id === "nedum" 
-                      ? "border-[#176F4A]/30 w-20 h-20" 
-                      : "border-[#8B5E3C]/30 w-16 h-16"
-                  }`} />
-                  <div className={`anm-layer2 absolute rounded-full border-2 ${
-                    activity.id === "nedum" 
-                      ? "border-[#176F4A]/20 w-24 h-24" 
-                      : "border-[#8B5E3C]/20 w-20 h-20"
-                  }`} />
-                </div>
-
-                {/* Main Node */}
+          {activities.map((activity, index) => {
+            const position = getNodePosition(activity.id);
+            return (
+              <div key={activity.id}>
+                {/* Visual Anchor Image */}
                 <div
-                  className={`relative rounded-full shadow-lg transition-transform duration-200 ${
-                    activity.id === "nedum"
-                      ? "w-16 h-16 bg-[#176F4A] border-4 border-white"
-                      : "w-12 h-12 bg-white border-3 border-[#8B5E3C]"
-                  } ${activeNode === activity.id ? 'scale-110' : 'scale-100'}`}
+                  className={`absolute z-10 transition-all duration-700 ${
+                    animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                  }`}
+                  style={{
+                    top: `calc(${position.top} - 80px)`,
+                    left: `calc(${position.left} + 50px)`,
+                    transform: "translate(-50%, -50%)",
+                    transitionDelay: `${index * 200}ms`
+                  }}
                 >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src={activity.icon}
-                      alt={activity.label}
-                      className={`w-6 h-6 ${activity.id === "nedum" ? "filter invert" : ""}`}
-                    />
+                  <div className="bg-white rounded-xl shadow-lg p-3 border border-[#E0DDD8]">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#F5F3F1] to-[#E8E6E3] rounded-lg mb-2 flex items-center justify-center">
+                      <img
+                        src={activity.icon}
+                        alt={activity.label}
+                        className="w-8 h-8"
+                      />
+                    </div>
+                    <p className="text-xs font-serif text-[#8B5E3C] text-center font-medium">
+                      {activity.label}
+                    </p>
                   </div>
-                  
-                  {activity.id === "nedum" && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#8B5E3C] rounded-full border-2 border-white" />
+                </div>
+
+                {/* Interactive Node */}
+                <div
+                  className={`absolute z-20 cursor-pointer transition-all duration-700 ${
+                    animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                  }`}
+                  style={{
+                    top: position.top,
+                    left: position.left,
+                    transform: "translate(-50%, -50%)",
+                    transitionDelay: `${index * 200 + 100}ms`
+                  }}
+                  onClick={() => handleNodeClick(activity.id)}
+                  onMouseEnter={() => setActiveNode(activity.id)}
+                  onMouseLeave={() => setActiveNode(null)}
+                >
+                  {/* Pulsing Rings */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className={`anm-layer1 absolute rounded-full border-2 ${
+                      activity.id === "nedum" 
+                        ? "border-[#176F4A]/30 w-20 h-20" 
+                        : "border-[#8B5E3C]/30 w-16 h-16"
+                    }`} />
+                    <div className={`anm-layer2 absolute rounded-full border-2 ${
+                      activity.id === "nedum" 
+                        ? "border-[#176F4A]/20 w-24 h-24" 
+                        : "border-[#8B5E3C]/20 w-20 h-20"
+                    }`} />
+                  </div>
+
+                  {/* Main Node */}
+                  <div
+                    className={`relative rounded-full shadow-lg transition-transform duration-200 ${
+                      activity.id === "nedum"
+                        ? "w-16 h-16 bg-[#176F4A] border-4 border-white"
+                        : "w-12 h-12 bg-white border-3 border-[#8B5E3C]"
+                    } ${activeNode === activity.id ? 'scale-110' : 'scale-100'}`}
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src={activity.icon}
+                        alt={activity.label}
+                        className={`w-6 h-6 ${activity.id === "nedum" ? "filter invert" : ""}`}
+                      />
+                    </div>
+                    
+                    {activity.id === "nedum" && (
+                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#8B5E3C] rounded-full border-2 border-white" />
+                    )}
+                  </div>
+
+                  {/* Premium Tooltip */}
+                  {activeNode === activity.id && (
+                    <div className="absolute bottom-full mb-6 left-1/2 transform -translate-x-1/2 z-30 animate-fade-in">
+                      <div className="bg-white/95 backdrop-blur-sm border border-[#E0DDD8] shadow-2xl rounded-2xl px-6 py-4 w-72">
+                        <h3 className="font-serif text-xl text-[#8B5E3C] font-bold mb-2">
+                          {activity.label}
+                        </h3>
+                        
+                        {activity.distance && activity.time && (
+                          <p className="text-sm text-gray-600 mb-3">
+                            <span className="font-medium">Distance:</span> 
+                            <span className="text-[#176F4A] ml-1">{activity.distance}</span>
+                            <span className="mx-2">•</span>
+                            <span className="font-medium">Time:</span>
+                            <span className="text-[#176F4A] ml-1">{activity.time}</span>
+                          </p>
+                        )}
+                        
+                        <div className="mb-4">
+                          <h4 className="font-medium text-[#8B5E3C] mb-2">Highlights:</h4>
+                          <ul className="space-y-1 text-sm text-gray-700">
+                            {activity.highlights.slice(0, 3).map((highlight, idx) => (
+                              <li key={idx} className="flex items-start">
+                                <span className="text-[#176F4A] mr-2">•</span>
+                                {highlight}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        {activity.id !== "nedum" && (
+                          <a
+                            href={`https://wa.me/919495107933?text=${encodeURIComponent(`Planning to visit ${activity.label}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block w-full py-3 rounded-xl bg-[#176F4A] hover:bg-[#14573a] text-white text-center font-medium transition-all duration-200 hover:shadow-lg"
+                          >
+                            Plan Visit
+                          </a>
+                        )}
+                        
+                        {/* Tooltip Arrow */}
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white" />
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                {/* Premium Tooltip */}
-                {activeNode === activity.id && (
-                  <div className="absolute bottom-full mb-6 left-1/2 transform -translate-x-1/2 z-30 animate-fade-in">
-                    <div className="bg-white/95 backdrop-blur-sm border border-[#E0DDD8] shadow-2xl rounded-2xl px-6 py-4 w-72">
-                      <h3 className="font-serif text-xl text-[#8B5E3C] font-bold mb-2">
-                        {activity.label}
-                      </h3>
-                      
-                      {activity.distance && activity.time && (
-                        <p className="text-sm text-gray-600 mb-3">
-                          <span className="font-medium">Distance:</span> 
-                          <span className="text-[#176F4A] ml-1">{activity.distance}</span>
-                          <span className="mx-2">•</span>
-                          <span className="font-medium">Time:</span>
-                          <span className="text-[#176F4A] ml-1">{activity.time}</span>
-                        </p>
-                      )}
-                      
-                      <div className="mb-4">
-                        <h4 className="font-medium text-[#8B5E3C] mb-2">Highlights:</h4>
-                        <ul className="space-y-1 text-sm text-gray-700">
-                          {activity.highlights.slice(0, 3).map((highlight, idx) => (
-                            <li key={idx} className="flex items-start">
-                              <span className="text-[#176F4A] mr-2">•</span>
-                              {highlight}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      {activity.id !== "nedum" && (
-                        <a
-                          href={`https://wa.me/919495107933?text=${encodeURIComponent(`Planning to visit ${activity.label}`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block w-full py-3 rounded-xl bg-[#176F4A] hover:bg-[#14573a] text-white text-center font-medium transition-all duration-200 hover:shadow-lg"
-                        >
-                          Plan Visit
-                        </a>
-                      )}
-                      
-                      {/* Tooltip Arrow */}
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white" />
-                    </div>
-                  </div>
-                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* Enhanced Legend */}
           <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm border border-[#E0DDD8] rounded-2xl px-5 py-4 shadow-lg z-30">
