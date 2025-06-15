@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -213,7 +212,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* === Thin two-lane road SVG paths === */}
+          {/* === Dashed road SVG paths, inspired by user image === */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -233,43 +232,23 @@ const NearbyMap: React.FC = () => {
                 </feMerge>
               </filter>
             </defs>
-            {destinationNodes.map((destination, idx) => (
-              <g key={destination.id}>
-                {/* Left lane dotted line */}
-                <path
-                  d={generatePath(destination)}
-                  stroke="url(#brownRouteGradient)"
-                  strokeWidth="0.4"
-                  fill="none"
-                  filter="url(#pathSoftGlow)"
-                  strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 0.8 : 0.5}
-                  style={{
-                    transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "0.8 1.6",
-                    transform: "translate(-0.8px, -0.8px)",
-                  }}
-                  onMouseEnter={() => setHoveredPath(destination.id)}
-                  onMouseLeave={() => setHoveredPath(null)}
-                />
-                {/* Right lane dotted line */}
-                <path
-                  d={generatePath(destination)}
-                  stroke="url(#brownRouteGradient)"
-                  strokeWidth="0.4"
-                  fill="none"
-                  filter="url(#pathSoftGlow)"
-                  strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 0.8 : 0.5}
-                  style={{
-                    transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "0.8 1.6",
-                    transform: "translate(0.8px, 0.8px)",
-                  }}
-                  onMouseEnter={() => setHoveredPath(destination.id)}
-                  onMouseLeave={() => setHoveredPath(null)}
-                />
-              </g>
+            {destinationNodes.map((destination) => (
+              <path
+                key={destination.id}
+                d={generatePath(destination)}
+                stroke="url(#brownRouteGradient)"
+                strokeWidth="1"
+                fill="none"
+                filter="url(#pathSoftGlow)"
+                strokeLinecap="round"
+                opacity={hoveredPath === destination.id ? 0.9 : 0.7}
+                style={{
+                  transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
+                  strokeDasharray: "4 2",
+                }}
+                onMouseEnter={() => setHoveredPath(destination.id)}
+                onMouseLeave={() => setHoveredPath(null)}
+              />
             ))}
           </svg>
 
@@ -359,8 +338,7 @@ const NearbyMap: React.FC = () => {
             </div>
             <div className="flex items-center gap-3">
               <svg width="32" height="12">
-                <path d="M2 4 Q 12 1 30 4" stroke="#8b5a3c" strokeWidth="1" fill="none" strokeDasharray="1 2" />
-                <path d="M2 8 Q 12 5 30 8" stroke="#8b5a3c" strokeWidth="1" fill="none" strokeDasharray="1 2" />
+                <path d="M2 6 Q 16 2 30 6" stroke="#8b5a3c" strokeWidth="1.5" fill="none" strokeDasharray="4 2" />
               </svg>
               <span className="text-sm text-slate-700 font-medium">Roads</span>
             </div>
