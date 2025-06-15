@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -259,7 +258,7 @@ const NearbyMap: React.FC = () => {
             ))}
           </svg>
 
-          {/* Main Node (Nedumkandam) with unique wave effect */}
+          {/* Main Node (Nedumkandam) with continuous pulse effect */}
           {nedumNode && (
             <div
               className="absolute z-30"
@@ -271,40 +270,10 @@ const NearbyMap: React.FC = () => {
                 onMouseLeave={() => setActiveNode(null)}
               >
                 <div className="relative w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden group-hover:shadow-2xl">
-                  {/* Root node special wave effect */}
-                  <div className="absolute inset-0 rounded-full overflow-hidden">
-                    <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-30 transition-opacity duration-500" viewBox="0 0 144 144">
-                      <circle
-                        cx="72"
-                        cy="72"
-                        r="60"
-                        fill="none"
-                        stroke="url(#rootWaveGradient)"
-                        strokeWidth="2"
-                        strokeDasharray="4 8"
-                        className="animate-spin"
-                        style={{ animation: "spin 8s linear infinite" }}
-                      />
-                      <circle
-                        cx="72"
-                        cy="72"
-                        r="45"
-                        fill="none"
-                        stroke="url(#rootWaveGradient)"
-                        strokeWidth="1.5"
-                        strokeDasharray="3 6"
-                        className="animate-spin"
-                        style={{ animation: "spin 6s linear infinite reverse" }}
-                      />
-                      <defs>
-                        <linearGradient id="rootWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#10b981" />
-                          <stop offset="50%" stopColor="#f59e0b" />
-                          <stop offset="100%" stopColor="#10b981" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
+                  {/* Pulsing waves for the root node */}
+                  <div className="absolute inset-0 rounded-full bg-emerald-400/50 animate-pulse-wave"></div>
+                  <div className="absolute inset-0 rounded-full bg-emerald-400/50 animate-pulse-wave" style={{ animationDelay: '1s' }}></div>
+                  
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
@@ -319,7 +288,7 @@ const NearbyMap: React.FC = () => {
             </div>
           )}
 
-          {/* Destination Nodes with hover wave effects */}
+          {/* Destination Nodes with continuous pulse effects */}
           {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
             return (
@@ -337,38 +306,10 @@ const NearbyMap: React.FC = () => {
                 onMouseLeave={() => setActiveNode(null)}
               >
                 <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden group-hover:scale-110">
-                  {/* Small wave effect on hover */}
-                  <div className="absolute inset-0 rounded-full overflow-hidden">
-                    <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-40 transition-opacity duration-300" viewBox="0 0 96 96">
-                      <circle
-                        cx="48"
-                        cy="48"
-                        r="35"
-                        fill="none"
-                        stroke="url(#hoverWaveGradient)"
-                        strokeWidth="1"
-                        strokeDasharray="2 4"
-                        className="animate-pulse"
-                      />
-                      <circle
-                        cx="48"
-                        cy="48"
-                        r="25"
-                        fill="none"
-                        stroke="url(#hoverWaveGradient)"
-                        strokeWidth="0.8"
-                        strokeDasharray="1.5 3"
-                        className="animate-pulse"
-                        style={{ animationDelay: "0.2s" }}
-                      />
-                      <defs>
-                        <linearGradient id="hoverWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#f59e0b" />
-                          <stop offset="100%" stopColor="#fb923c" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
+                  {/* Pulsing waves for destination nodes */}
+                  <div className="absolute inset-0 rounded-full bg-amber-400/50 animate-pulse-wave"></div>
+                  <div className="absolute inset-0 rounded-full bg-amber-400/50 animate-pulse-wave" style={{ animationDelay: '1s' }}></div>
+
                   <img
                     src={activity.icon}
                     alt={activity.label}
@@ -424,6 +365,19 @@ const NearbyMap: React.FC = () => {
         @keyframes fadeInUp {
           from { opacity:0; transform:translateX(-50%) translateY(14px) scale(0.97);}
           to   { opacity:1; transform:translateX(-50%) translateY(0) scale(1);}
+        }
+        @keyframes pulse-wave {
+          0% {
+            transform: scale(1);
+            opacity: 0.6;
+          }
+          100% {
+            transform: scale(1.8);
+            opacity: 0;
+          }
+        }
+        .animate-pulse-wave {
+          animation: pulse-wave 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
       `}</style>
     </section>
