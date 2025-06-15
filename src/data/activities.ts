@@ -10,13 +10,12 @@ export interface Activity {
   time?: string;
 }
 
-export const activities: Activity[] = [
-  {
+export const activities: Activity[] = [  {
     id: "nedum",
     label: "Nedumkandam",
     top: "650px",
     left: "500px", 
-    icon: "/icons/home.svg",
+    icon: "/svg/placeholder.svg",
     highlights: ["Your central hub in Idukki", "Gateway to High Ranges"],
   },
   {
@@ -24,7 +23,7 @@ export const activities: Activity[] = [
     label: "Munnar",
     top: "150px",
     left: "250px",
-    icon: "/svg/munnars.svg",
+    icon: "/svg/munnar.svg",
     highlights: ["Tea Plantations", "Eravikulam National Park", "Munnar Tea Museum"],
     distance: "90 km",
     time: "2 hr 30 min",
@@ -34,7 +33,7 @@ export const activities: Activity[] = [
     label: "Thekkady",
     top: "700px",
     left: "680px",
-    icon: "/icons/wildlife.svg",
+    icon: "/svg/tekady.svg",
     highlights: ["Periyar Wildlife Sanctuary", "Boat Safari", "Spice Plantations"],
     distance: "60 km",
     time: "1 hr 45 min",
@@ -44,7 +43,7 @@ export const activities: Activity[] = [
     label: "Ramakkalmedu",
     top: "600px",
     left: "600px",
-    icon: "/icons/wind.svg",
+    icon: "/svg/ramakkalmedu.svg",
     highlights: ["Windmills", "Panoramic Views", "Trekking"],
     distance: "25 km",
     time: "45 min",
@@ -54,7 +53,7 @@ export const activities: Activity[] = [
     label: "Vagamon",
     top: "750px",
     left: "280px",
-    icon: "/icons/paragliding.svg",
+    icon: "/svg/vagamon.svg",
     highlights: ["Green Meadows", "Pine Forests", "Paragliding"],
     distance: "70 km",
     time: "2 hr",
@@ -64,7 +63,7 @@ export const activities: Activity[] = [
     label: "Idukki Arch Dam",
     top: "400px",
     left: "150px",
-    icon: "/icons/dam.svg",
+    icon: "/svg/idukkidam.svg",
     highlights: ["Asia's Largest Arch Dam", "Panoramic Views", "Boating"],
     distance: "75 km",
     time: "2 hr 15 min",

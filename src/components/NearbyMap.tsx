@@ -120,14 +120,9 @@ const NearbyMap: React.FC = () => {
         return { top: "50%", left: "50%" };
     }
   };
-
   const getVisualImage = (activityId: string) => {
-    switch (activityId) {
-      case "munnar":
-        return "svg/munnars.svg";
-      default:
-        return null;
-    }
+    const activity = activities.find(a => a.id === activityId);
+    return activity ? activity.icon : null;
   };
 
   const handleNodeClick = (nodeId: string) => {
