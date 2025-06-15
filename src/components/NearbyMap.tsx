@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -244,7 +245,7 @@ const NearbyMap: React.FC = () => {
                 opacity={hoveredPath === destination.id ? 0.9 : 0.7}
                 style={{
                   transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                  strokeDasharray: "0.5 0.75",
+                  strokeDasharray: "1 2",
                 }}
                 onMouseEnter={() => setHoveredPath(destination.id)}
                 onMouseLeave={() => setHoveredPath(null)}
@@ -338,7 +339,7 @@ const NearbyMap: React.FC = () => {
             </div>
             <div className="flex items-center gap-3">
               <svg width="32" height="12">
-                <path d="M2 6 Q 16 2 30 6" stroke="#8b5a3c" strokeWidth="1" fill="none" strokeDasharray="0.5 0.75" />
+                <path d="M2 6 Q 16 2 30 6" stroke="#8b5a3c" strokeWidth="1" fill="none" strokeDasharray="1 2" />
               </svg>
               <span className="text-sm text-slate-700 font-medium">Roads</span>
             </div>
