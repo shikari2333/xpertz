@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -236,35 +237,7 @@ const NearbyMap: React.FC = () => {
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
-              
-              {/* Root node background waves */}
-              <pattern id="rootNodeWaves" x="0" y="0" width="100%" height="100%" patternUnits="objectBoundingBox">
-                <circle cx="50%" cy="50%" r="40%" fill="none" stroke="rgba(16, 185, 129, 0.2)" strokeWidth="1" strokeDasharray="3 6">
-                  <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="8s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="50%" cy="50%" r="30%" fill="none" stroke="rgba(245, 158, 11, 0.3)" strokeWidth="1.5" strokeDasharray="2 4">
-                  <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" dur="6s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="50%" cy="50%" r="20%" fill="none" stroke="rgba(16, 185, 129, 0.1)" strokeWidth="0.8" strokeDasharray="1 3">
-                  <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="10s" repeatCount="indefinite"/>
-                </circle>
-              </pattern>
-              
-              {/* Destination node background waves */}
-              <pattern id="destNodeWaves" x="0" y="0" width="100%" height="100%" patternUnits="objectBoundingBox">
-                <circle cx="50%" cy="50%" r="35%" fill="none" stroke="rgba(245, 158, 11, 0.15)" strokeWidth="1" strokeDasharray="2 4">
-                  <animate attributeName="r" values="30%;40%;30%" dur="3s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="50%" cy="50%" r="25%" fill="none" stroke="rgba(251, 146, 60, 0.2)" strokeWidth="0.8" strokeDasharray="1.5 3">
-                  <animate attributeName="r" values="20%;30%;20%" dur="2.5s" repeatCount="indefinite"/>
-                  <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2.5s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="50%" cy="50%" r="15%" fill="none" stroke="rgba(245, 158, 11, 0.1)" strokeWidth="0.5" strokeDasharray="1 2">
-                  <animate attributeName="r" values="10%;20%;10%" dur="4s" repeatCount="indefinite"/>
-                </circle>
-              </pattern>
             </defs>
-            
             {destinationNodes.map((destination, idx) => (
               <g key={destination.id}>
                 <path
@@ -286,7 +259,7 @@ const NearbyMap: React.FC = () => {
             ))}
           </svg>
 
-          {/* Main Node (Nedumkandam) with unique wave background */}
+          {/* Main Node (Nedumkandam) with unique wave effect */}
           {nedumNode && (
             <div
               className="absolute z-30"
@@ -298,14 +271,40 @@ const NearbyMap: React.FC = () => {
                 onMouseLeave={() => setActiveNode(null)}
               >
                 <div className="relative w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden group-hover:shadow-2xl">
-                  {/* Root node background waves */}
-                  <div 
-                    className="absolute inset-0 rounded-full opacity-60"
-                    style={{ background: 'url(#rootNodeWaves)' }}
-                  ></div>
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 144 144">
-                    <circle cx="72" cy="72" fill="url(#rootNodeWaves)" r="72" opacity="0.8"/>
-                  </svg>
+                  {/* Root node special wave effect */}
+                  <div className="absolute inset-0 rounded-full overflow-hidden">
+                    <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-30 transition-opacity duration-500" viewBox="0 0 144 144">
+                      <circle
+                        cx="72"
+                        cy="72"
+                        r="60"
+                        fill="none"
+                        stroke="url(#rootWaveGradient)"
+                        strokeWidth="2"
+                        strokeDasharray="4 8"
+                        className="animate-spin"
+                        style={{ animation: "spin 8s linear infinite" }}
+                      />
+                      <circle
+                        cx="72"
+                        cy="72"
+                        r="45"
+                        fill="none"
+                        stroke="url(#rootWaveGradient)"
+                        strokeWidth="1.5"
+                        strokeDasharray="3 6"
+                        className="animate-spin"
+                        style={{ animation: "spin 6s linear infinite reverse" }}
+                      />
+                      <defs>
+                        <linearGradient id="rootWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#10b981" />
+                          <stop offset="50%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#10b981" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
@@ -320,7 +319,7 @@ const NearbyMap: React.FC = () => {
             </div>
           )}
 
-          {/* Destination Nodes with different wave backgrounds */}
+          {/* Destination Nodes with hover wave effects */}
           {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
             return (
@@ -338,13 +337,38 @@ const NearbyMap: React.FC = () => {
                 onMouseLeave={() => setActiveNode(null)}
               >
                 <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden group-hover:scale-110">
-                  {/* Destination node background waves */}
-                  <div 
-                    className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-300"
-                  ></div>
-                  <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-40 transition-opacity duration-300" viewBox="0 0 96 96">
-                    <circle cx="48" cy="48" fill="url(#destNodeWaves)" r="48"/>
-                  </svg>
+                  {/* Small wave effect on hover */}
+                  <div className="absolute inset-0 rounded-full overflow-hidden">
+                    <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-40 transition-opacity duration-300" viewBox="0 0 96 96">
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="35"
+                        fill="none"
+                        stroke="url(#hoverWaveGradient)"
+                        strokeWidth="1"
+                        strokeDasharray="2 4"
+                        className="animate-pulse"
+                      />
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="25"
+                        fill="none"
+                        stroke="url(#hoverWaveGradient)"
+                        strokeWidth="0.8"
+                        strokeDasharray="1.5 3"
+                        className="animate-pulse"
+                        style={{ animationDelay: "0.2s" }}
+                      />
+                      <defs>
+                        <linearGradient id="hoverWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#fb923c" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
                   <img
                     src={activity.icon}
                     alt={activity.label}
