@@ -21,10 +21,9 @@ const NearbyMap: React.FC = () => {
   }, []);
 
   const nedumNode = activities.find(a => a.id === "nedum");
-  const destinationNodes = activities.filter(a => a.id !== "nedum");
-  // Generate natural road-like paths with multiple curve segments
+  const destinationNodes = activities.filter(a => a.id !== "nedum");  // Generate natural road-like paths with multiple curve segments
   const generatePath = (destination: any) => {
-    if (!nedumNode) return "";
+    if (!nedumNode || destination.id === "nedum") return ""; // Don't generate paths for Nedumkandam itself
     
     // Use percentage-based coordinates for better responsiveness
     const startX = 50; // Center position for Nedumkandam
@@ -202,11 +201,12 @@ const NearbyMap: React.FC = () => {
     );
   }
 
-  return (    <section className="nearby-map relative w-full bg-[#FFFFFF] overflow-hidden">
+  return (
+    <section className="nearby-map relative w-full bg-[#FFFFFF] overflow-hidden">
       <div className="w-full relative">
         <div className="relative w-full h-[100vh] bg-white">
           
-          {/* Organic SVG Paths */}
+          {/* Path SVG Layer */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -215,140 +215,130 @@ const NearbyMap: React.FC = () => {
           >
             <defs>
               <style>
-                {`                  .path-road {
+                {`
+                  .path-road {
                     stroke: #8B5E3C;
                     stroke-width: 0.6;
                     fill: none;
                     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05));
-                    animation: ${animateIn ? 'pathDraw 2.5s ease-out forwards' : 'none'};
-                  }
-
-                  .path-line-decoration {
-                    stroke: #FFFFFF;
-                    stroke-width: 0.15;
-                    stroke-dasharray: 0.6 1.2;
-                    stroke-linecap: round;
-                    fill: none;
-                    opacity: 0.5;
-                    animation: ${animateIn ? 'pathDraw 2.5s ease-out forwards, pathFlow 3s ease-in-out infinite' : 'none'};
-                  }
-                  
-                  @keyframes pathDraw {
-                    from { 
-                      stroke-dashoffset: 100;
-                      opacity: 0;
-                    }
-                    to { 
-                      stroke-dashoffset: 0;
-                      opacity: 1;
-                    }
-                  }
-                  
-                  @keyframes pathFlow {
-                    0%, 100% { stroke-dashoffset: 0; }
-                    50% { stroke-dashoffset: 4; }
+                    animation: pathDraw 2.5s ease-out forwards;
                   }
                 `}
               </style>
             </defs>
             
-            {destinationNodes.map((destination, index) => (              <>
-                {/* Base road path */}
-                <path
-                  key={`${destination.id}-road`}
-                  d={generatePath(destination)}
-                  className="path-road"
-                  style={{ 
-                    animationDelay: `${index * 300}ms`,
-                  }}
-                />
-                {/* Road line decoration */}
-                <path
-                  key={`${destination.id}-decoration`}
-                  d={generatePath(destination)}
-                  className="path-line-decoration"
-                  style={{ 
-                    animationDelay: `${index * 300}ms`,
-                  }}
-                />
-              </>
+            {destinationNodes.map((destination, index) => (
+              <path
+                key={`${destination.id}-road`}
+                d={generatePath(destination)}
+                className="path-road"
+                style={{ 
+                  animationDelay: `${index * 300}ms`,
+                }}
+              />
             ))}
           </svg>
 
-          {/* Activity Nodes with Animations */}
-          {activities.map((activity, index) => {
+          {/* Central Nedumkandam Node */}
+          {nedumNode && (
+            <div
+              className="absolute z-30 translate-x-[-50%] translate-y-[-50%]"
+              style={{
+                top: "60%",
+                left: "50%",
+              }}
+            >
+              <div
+                className={`transition-all duration-500 group ${
+                  activeNode === "nedum" ? 'scale-105' : 'hover:scale-102'
+                }`}
+                onMouseEnter={() => setActiveNode("nedum")}
+                onMouseLeave={() => setActiveNode(null)}
+              >
+                <div className="relative">
+                  {/* Root Node Wave Effects */}
+                  <div className="absolute inset-0">
+                    <div className="root-wave absolute inset-0 rounded-full opacity-0 group-hover:opacity-100"></div>
+                    <div className="root-pulse absolute inset-0 rounded-full"></div>
+                  </div>
+                  
+                  {/* Main Circle */}
+                  <div className="relative w-40 h-40 rounded-full overflow-hidden shadow-lg z-10">
+                    <img
+                      src={nedumNode.icon}
+                      alt={nedumNode.label}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Label */}
+                  <p className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-base font-serif text-[#8B5E3C] text-center font-medium whitespace-nowrap">
+                    {nedumNode.label}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Destination Nodes */}
+          {destinationNodes.map((activity, index) => {
             const position = getNodePosition(activity.id);
             const visualImage = getVisualImage(activity.id);
             
             return (
-              <div key={activity.id}>
-                {/* Visual Anchor Image */}
-                {/* Removed Visual Anchor Image */}
-
-                {/* Interactive Node */}
-                <div
-                  className={`absolute z-20 cursor-pointer transition-all duration-700 ${
-                    animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                  }`}
-                  style={{
-                    top: position.top,
-                    left: position.left,
-                    transform: "translate(-50%, -50%)",
-                    transitionDelay: `${index * 200 + 100}ms`
-                  }}
-                  onClick={() => handleNodeClick(activity.id)}
-                  onMouseEnter={() => setActiveNode(activity.id)}
-                  onMouseLeave={() => setActiveNode(null)}
-                >                  {/* Modern Minimal Effect */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className={`modern-wave absolute ${
-                        activity.id === "nedum"
-                          ? "bg-[#176F4A]"
-                          : "bg-[#8B5E3C]"
-                      }`}
-                      style={{
-                        opacity: activeNode === activity.id ? 0.12 : 0
-                      }}
-                    />
-                  </div>
-
-                  {/* Main Node */}
+              <div
+                key={activity.id}
+                className={`absolute z-20 cursor-pointer transition-all duration-700 ${
+                  animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                }`}
+                style={{
+                  top: position.top,
+                  left: position.left,
+                  transform: "translate(-50%, -50%)",
+                  transitionDelay: `${index * 200 + 100}ms`
+                }}
+                onClick={() => handleNodeClick(activity.id)}
+                onMouseEnter={() => setActiveNode(activity.id)}
+                onMouseLeave={() => setActiveNode(null)}
+              >
+                {/* Modern Wave Effect */}
+                <div className="absolute inset-0 flex items-center justify-center">
                   <div
-                    className={`relative rounded-full shadow-lg transition-all duration-500 group hover:shadow-xl overflow-hidden ${
-                      activity.id === "nedum"
-                        ? "w-36 h-36 bg-[#176F4A]"
-                        : "w-32 h-32 bg-white"
-                    } ${activeNode === activity.id ? 'scale-105' : 'scale-100 hover:scale-102'}`}
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full transition-transform duration-500 group-hover:scale-110">
-                      {visualImage ? (
-                        <img
-                          src={visualImage}
-                          alt={activity.label}
-                          className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                        />
-                      ) : (
-                        <img
-                          src={activity.icon}
-                          alt={activity.label}
-                          className={`w-20 h-20 transition-all duration-300 group-hover:scale-110 ${activity.id === "nedum" ? "filter invert" : ""}`}
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-full"></div>
-                    </div>
-                    
-                    {activity.id === "nedum" && (
-                      <div className="absolute -top-2 -right-2 w-10 h-10 bg-[#8B5E3C] rounded-full border-3 border-white flex items-center justify-center text-white text-base font-bold shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">!</div>
+                    className="modern-wave absolute bg-[#8B5E3C]"
+                    style={{
+                      opacity: activeNode === activity.id ? 0.12 : 0
+                    }}
+                  />
+                </div>
+
+                {/* Destination Node */}
+                <div
+                  className={`relative rounded-full shadow-lg transition-all duration-500 group hover:shadow-xl overflow-hidden
+                    w-32 h-32 bg-white border-2 border-[#8B5E3C]/50 ${
+                    activeNode === activity.id ? 'scale-105' : 'scale-100 hover:scale-102'
+                  }`}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full">
+                    {visualImage ? (
+                      <img
+                        src={visualImage}
+                        alt={activity.label}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={activity.icon}
+                        alt={activity.label}
+                        className="w-16 h-16"
+                      />
                     )}
                   </div>
-
-                  {/* Label */}
-                  <p className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 text-sm font-serif text-[#8B5E3C] text-center font-medium whitespace-nowrap">
-                    {activity.label}
-                  </p>
-
                 </div>
+
+                {/* Label */}
+                <p className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 text-sm font-serif text-[#8B5E3C] text-center font-medium whitespace-nowrap">
+                  {activity.label}
+                </p>
               </div>
             );
           })}
@@ -383,6 +373,43 @@ const NearbyMap: React.FC = () => {
           border-radius: 50%;
           animation: modernWave 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
           transition: opacity 0.5s ease-in-out;
+        }
+        
+        .root-wave {
+          background: radial-gradient(circle, rgba(23,111,74,0.1) 0%, rgba(23,111,74,0) 70%);
+          transform-origin: center;
+          animation: rootWave 3s infinite ease-out;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .root-pulse {
+          border: 2px solid rgba(23,111,74,0.2);
+          animation: rootPulse 2.5s infinite ease-out;
+        }
+
+        @keyframes rootWave {
+          0% {
+            transform: scale(0.95);
+            opacity: 0.5;
+          }
+          50% {
+            opacity: 0.3;
+          }
+          100% {
+            transform: scale(1.5);
+            opacity: 0;
+          }
+        }
+
+        @keyframes rootPulse {
+          0% {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+          100% {
+            transform: scale(1.4);
+            opacity: 0;
+          }
         }
         
         @keyframes modernWave {

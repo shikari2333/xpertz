@@ -15,7 +15,7 @@ export const activities: Activity[] = [  {
     label: "Nedumkandam",
     top: "650px",
     left: "500px", 
-    icon: "/svg/placeholder.svg",
+    icon: "/assets/nedumkandam.png",
     highlights: ["Your central hub in Idukki", "Gateway to High Ranges"],
   },
   {
