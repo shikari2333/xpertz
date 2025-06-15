@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -258,7 +259,7 @@ const NearbyMap: React.FC = () => {
             ))}
           </svg>
 
-          {/* Main Node (Nedumkandam) */}
+          {/* Main Node (Nedumkandam) with unique wave effect */}
           {nedumNode && (
             <div
               className="absolute z-30"
@@ -269,11 +270,45 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode("nedum")}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden">
+                <div className="relative w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden group-hover:shadow-2xl">
+                  {/* Root node special wave effect */}
+                  <div className="absolute inset-0 rounded-full overflow-hidden">
+                    <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-30 transition-opacity duration-500" viewBox="0 0 144 144">
+                      <circle
+                        cx="72"
+                        cy="72"
+                        r="60"
+                        fill="none"
+                        stroke="url(#rootWaveGradient)"
+                        strokeWidth="2"
+                        strokeDasharray="4 8"
+                        className="animate-spin"
+                        style={{ animation: "spin 8s linear infinite" }}
+                      />
+                      <circle
+                        cx="72"
+                        cy="72"
+                        r="45"
+                        fill="none"
+                        stroke="url(#rootWaveGradient)"
+                        strokeWidth="1.5"
+                        strokeDasharray="3 6"
+                        className="animate-spin"
+                        style={{ animation: "spin 6s linear infinite reverse" }}
+                      />
+                      <defs>
+                        <linearGradient id="rootWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#10b981" />
+                          <stop offset="50%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#10b981" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
-                    className="w-full h-full object-cover rounded-full"
+                    className="w-full h-full object-cover rounded-full relative z-10"
                   />
                 </div>
                 <div className="mt-3">
@@ -284,7 +319,7 @@ const NearbyMap: React.FC = () => {
             </div>
           )}
 
-          {/* Destination Nodes */}
+          {/* Destination Nodes with hover wave effects */}
           {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
             return (
@@ -301,11 +336,43 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden group-hover:scale-110">
+                  {/* Small wave effect on hover */}
+                  <div className="absolute inset-0 rounded-full overflow-hidden">
+                    <svg className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-40 transition-opacity duration-300" viewBox="0 0 96 96">
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="35"
+                        fill="none"
+                        stroke="url(#hoverWaveGradient)"
+                        strokeWidth="1"
+                        strokeDasharray="2 4"
+                        className="animate-pulse"
+                      />
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="25"
+                        fill="none"
+                        stroke="url(#hoverWaveGradient)"
+                        strokeWidth="0.8"
+                        strokeDasharray="1.5 3"
+                        className="animate-pulse"
+                        style={{ animationDelay: "0.2s" }}
+                      />
+                      <defs>
+                        <linearGradient id="hoverWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#fb923c" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
                   <img
                     src={activity.icon}
                     alt={activity.label}
-                    className="w-full h-full object-cover rounded-full"
+                    className="w-full h-full object-cover rounded-full relative z-10"
                   />
                 </div>
                 <div className="text-center mt-1">
