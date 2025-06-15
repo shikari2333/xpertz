@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -115,14 +114,11 @@ const NearbyMap: React.FC = () => {
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <div className="flex items-center mb-6">
-                  <div className={`relative w-20 h-20 flex items-center justify-center overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-500 ${
+                  <div className={`relative w-20 h-20 rounded-full overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-500 ${
                     activity.id === "nedum" 
                       ? "bg-gradient-to-br from-emerald-500 to-emerald-600" 
                       : "bg-gradient-to-br from-amber-500 to-orange-500"
-                  }`}
-                  style={{
-                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                  }}>
+                  }`}>
                     <img
                       src={activity.icon}
                       alt={activity.label}
@@ -273,14 +269,11 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode("nedum")}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="w-36 h-36 shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden"
-                style={{
-                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                }}>
+                <div className="w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden">
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-full"
                   />
                 </div>
                 <div className="mt-3">
@@ -308,14 +301,11 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="w-24 h-24 flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden"
-                style={{
-                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                }}>
+                <div className="w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden">
                   <img
                     src={activity.icon}
                     alt={activity.label}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-full"
                   />
                 </div>
                 <div className="text-center mt-1">
@@ -341,20 +331,19 @@ const NearbyMap: React.FC = () => {
           })}
 
           {/* Legend with wave styling */}
-          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30"
-          style={{
-            clipPath: 'polygon(0% 10%, 10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%)'
-          }}>
+          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-5 h-5 bg-emerald-400" style={{clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'}}></div>
+              <div className="w-5 h-5 bg-emerald-400 rounded-full"></div>
               <span className="text-sm text-slate-700 font-medium">Your Location</span>
             </div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-5 h-5 bg-white border border-amber-200" style={{clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'}}></div>
+              <div className="w-5 h-5 bg-white border border-amber-200 rounded-full"></div>
               <span className="text-sm text-slate-700 font-medium">Destinations</span>
             </div>
             <div className="flex items-center gap-3">
-              <svg width="32" height="12"><path d="M1 6 Q 12 1 31 6" stroke="#fbbf24" strokeWidth="2" fill="none" strokeDasharray="1 1.5" /></svg>
+              <svg width="32" height="12">
+                <path d="M1 6 Q 8 2 16 6 Q 24 10 31 6" stroke="#fbbf24" strokeWidth="2" fill="none" strokeDasharray="1 1.5" />
+              </svg>
               <span className="text-sm text-slate-700 font-medium">Scenic Route</span>
             </div>
           </div>
