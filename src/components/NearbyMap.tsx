@@ -212,7 +212,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* === Redefined SVG Path Layer (thin, brown, elegant) === */}
+          {/* === Redefined SVG Path Layer (thin, brown, elegant, MORE DENSE DOTS) === */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -221,8 +221,8 @@ const NearbyMap: React.FC = () => {
           >
             <defs>
               <linearGradient id="brownRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#886052" /> {/* lighter warm brown */}
-                <stop offset="100%" stopColor="#5d3a1a" /> {/* deep brown */}
+                <stop offset="0%" stopColor="#886052" />
+                <stop offset="100%" stopColor="#5d3a1a" />
               </linearGradient>
               <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="1.2" result="glow" />
@@ -244,7 +244,7 @@ const NearbyMap: React.FC = () => {
                 opacity={hoveredPath === destination.id ? 0.85 : 0.55}
                 style={{
                   transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                  strokeDasharray: "2 2", // dotted for a more stylized "road" effect
+                  strokeDasharray: "0.7 1.4", // MUCH smaller, more frequent dots
                 }}
                 onMouseEnter={() => setHoveredPath(destination.id)}
                 onMouseLeave={() => setHoveredPath(null)}
