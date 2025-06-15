@@ -194,8 +194,8 @@ const NearbyMap: React.FC = () => {
 
   return (
     <section className="nearby-map relative w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
+      {/* much subtler background */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* much subtler background */}
         <div className="absolute top-28 left-12 w-48 h-48 bg-emerald-100/40 rounded-full blur-3xl"></div>
         <div className="absolute bottom-16 right-12 w-56 h-56 bg-amber-100/40 rounded-full blur-3xl"></div>
       </div>
@@ -212,7 +212,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* --- Smoothed SVG Path Layer --- */}
+          {/* === Redefined SVG Path Layer (thin, brown, elegant) === */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -220,12 +220,12 @@ const NearbyMap: React.FC = () => {
             style={{ zIndex: 1 }}
           >
             <defs>
-              <linearGradient id="pathGradientAesthetic" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#34d399" />
-                <stop offset="100%" stopColor="#f59e0b" />
+              <linearGradient id="brownRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#886052" /> {/* lighter warm brown */}
+                <stop offset="100%" stopColor="#5d3a1a" /> {/* deep brown */}
               </linearGradient>
               <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="1.5" result="glow" />
+                <feGaussianBlur stdDeviation="1.2" result="glow" />
                 <feMerge>
                   <feMergeNode in="glow" />
                   <feMergeNode in="SourceGraphic" />
@@ -236,15 +236,15 @@ const NearbyMap: React.FC = () => {
               <path
                 key={destination.id}
                 d={generatePath(destination)}
-                stroke="url(#pathGradientAesthetic)"
-                strokeWidth="2.5"
+                stroke="url(#brownRouteGradient)"
+                strokeWidth="1.2"
                 fill="none"
                 filter="url(#pathSoftGlow)"
                 strokeLinecap="round"
-                opacity={hoveredPath === destination.id ? 0.95 : 0.65}
+                opacity={hoveredPath === destination.id ? 0.85 : 0.55}
                 style={{
                   transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                  strokeDasharray: "3 2",
+                  strokeDasharray: "2 2", // dotted for a more stylized "road" effect
                 }}
                 onMouseEnter={() => setHoveredPath(destination.id)}
                 onMouseLeave={() => setHoveredPath(null)}
