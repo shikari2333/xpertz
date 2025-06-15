@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -33,39 +34,39 @@ const NearbyMap: React.FC = () => {
 
     switch (destination.id) {
       case "munnar":
-        // Complex S-curve going up and left like a mountain road
+        // Path going up and left 
         pathString = `M ${startX} ${startY} 
                      Q 45 50, 40 40 
                      Q 35 30, 30 25 
-                     Q 25 20, 15 15`;
+                     Q 25 20, 20 15`;
         break;
       case "thekkady":
-        // Winding path going down and right with multiple curves
+        // Path going down and right
         pathString = `M ${startX} ${startY} 
-                     Q 60 65, 65 70 
-                     Q 70 75, 75 78 
-                     Q 80 82, 85 85`;
+                     Q 60 65, 70 70 
+                     Q 75 75, 80 80 
+                     Q 82 82, 85 85`;
         break;
       case "ramakkalmedu":
-        // Gentle arc going right with slight elevation changes
+        // Path going directly right (fixed connection)
         pathString = `M ${startX} ${startY} 
                      Q 58 58, 65 55 
                      Q 72 52, 78 48 
                      Q 82 46, 85 45`;
         break;
       case "vagamon":
-        // Curved descent going down and left
+        // Path going down and left
         pathString = `M ${startX} ${startY} 
-                     Q 45 68, 38 75 
-                     Q 32 82, 28 86 
-                     Q 24 88, 20 90`;
+                     Q 42 68, 35 75 
+                     Q 28 82, 22 88 
+                     Q 18 90, 15 92`;
         break;
       case "idukki-dam":
-        // Winding path going left with natural curves
+        // Path going left (moved more to center)
         pathString = `M ${startX} ${startY} 
                      Q 42 58, 35 55 
                      Q 28 52, 22 48 
-                     Q 16 44, 10 40`;
+                     Q 18 44, 15 40`;
         break;
       default:
         return "";
@@ -79,15 +80,15 @@ const NearbyMap: React.FC = () => {
       case "nedum":
         return { top: "60%", left: "50%" };
       case "munnar":
-        return { top: "15%", left: "15%" };
+        return { top: "15%", left: "20%" };
       case "thekkady":
         return { top: "85%", left: "85%" };
       case "ramakkalmedu":
-        return { top: "45%", left: "85%" };
+        return { top: "45%", left: "85%" }; // Properly positioned to the right
       case "vagamon":
-        return { top: "90%", left: "20%" };
+        return { top: "92%", left: "15%" };
       case "idukki-dam":
-        return { top: "40%", left: "10%" };
+        return { top: "40%", left: "15%" }; // Moved more to center-left for balance
       default:
         return { top: "50%", left: "50%" };
     }
