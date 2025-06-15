@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -34,35 +33,35 @@ const NearbyMap: React.FC = () => {
 
     switch (destination.id) {
       case "munnar":
-        // Path going up and left 
+        // Path going up and left to match node position
         pathString = `M ${startX} ${startY} 
                      Q 45 50, 40 40 
                      Q 35 30, 30 25 
                      Q 25 20, 20 15`;
         break;
       case "thekkady":
-        // Path going down and right
+        // Path going down and right to match node position
         pathString = `M ${startX} ${startY} 
                      Q 60 65, 70 70 
                      Q 75 75, 80 80 
                      Q 82 82, 85 85`;
         break;
       case "ramakkalmedu":
-        // Path going directly right (fixed connection)
+        // Path going right and slightly up to match node position
         pathString = `M ${startX} ${startY} 
                      Q 58 58, 65 55 
                      Q 72 52, 78 48 
                      Q 82 46, 85 45`;
         break;
       case "vagamon":
-        // Path going down and left
+        // Path going down and left to match node position
         pathString = `M ${startX} ${startY} 
                      Q 42 68, 35 75 
                      Q 28 82, 22 88 
                      Q 18 90, 15 92`;
         break;
       case "idukki-dam":
-        // Path going left (moved more to center)
+        // Path going left and slightly up to match node position
         pathString = `M ${startX} ${startY} 
                      Q 42 58, 35 55 
                      Q 28 52, 22 48 
@@ -80,15 +79,15 @@ const NearbyMap: React.FC = () => {
       case "nedum":
         return { top: "60%", left: "50%" };
       case "munnar":
-        return { top: "15%", left: "20%" };
+        return { top: "15%", left: "20%" }; // Matches path endpoint
       case "thekkady":
-        return { top: "85%", left: "85%" };
+        return { top: "85%", left: "85%" }; // Matches path endpoint
       case "ramakkalmedu":
-        return { top: "45%", left: "85%" }; // Properly positioned to the right
+        return { top: "45%", left: "85%" }; // Matches path endpoint
       case "vagamon":
-        return { top: "92%", left: "15%" };
+        return { top: "92%", left: "15%" }; // Matches path endpoint
       case "idukki-dam":
-        return { top: "40%", left: "15%" }; // Moved more to center-left for balance
+        return { top: "40%", left: "15%" }; // Matches path endpoint
       default:
         return { top: "50%", left: "50%" };
     }
@@ -166,7 +165,7 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="#00000010"
-                  strokeWidth={isMobile ? "1.2" : "1.4"}
+                  strokeWidth={isMobile ? "1.8" : "2.0"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -182,7 +181,7 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.9" : "1.0"}
+                  strokeWidth={isMobile ? "1.4" : "1.6"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
