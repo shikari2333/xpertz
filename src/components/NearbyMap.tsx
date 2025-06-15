@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -25,76 +24,45 @@ const NearbyMap: React.FC = () => {
   const nedumNode = activities.find(a => a.id === "nedum");
   const destinationNodes = activities.filter(a => a.id !== "nedum");
 
-  // Enhanced path generation with smoother curves
+  // === Enhanced path generation with more realistic curves ===
   const generatePath = (destination: any) => {
     if (!nedumNode || destination.id === "nedum") return "";
-    
+    // Re-center curves for more 'organic' and realistic feel
     const startX = 50;
     const startY = 60;
-    
-    let pathSegments;
-    
+    let end, curve1, curve2;
+
     switch (destination.id) {
       case "munnar":
-        pathSegments = [
-          { x: 48, y: 50 },
-          { x: 45, y: 40 },
-          { x: 40, y: 30 },
-          { x: 35, y: 25 },
-          { x: 25, y: 20 }
-        ];
+        end = { x: 25, y: 20 };
+        curve1 = { x: 42, y: 45 };
+        curve2 = { x: 30, y: 30 };
         break;
       case "thekkady":
-        pathSegments = [
-          { x: 55, y: 65 },
-          { x: 65, y: 68 },
-          { x: 72, y: 72 },
-          { x: 78, y: 75 }
-        ];
+        end = { x: 78, y: 75 };
+        curve1 = { x: 60, y: 65 };
+        curve2 = { x: 74, y: 58 };
         break;
       case "ramakkalmedu":
-        pathSegments = [
-          { x: 55, y: 58 },
-          { x: 62, y: 55 },
-          { x: 68, y: 52 },
-          { x: 72, y: 50 }
-        ];
+        end = { x: 72, y: 50 };
+        curve1 = { x: 56, y: 56 };
+        curve2 = { x: 68, y: 54 };
         break;
       case "vagamon":
-        pathSegments = [
-          { x: 45, y: 65 },
-          { x: 40, y: 72 },
-          { x: 35, y: 78 },
-          { x: 30, y: 85 }
-        ];
+        end = { x: 30, y: 85 };
+        curve1 = { x: 44, y: 70 };
+        curve2 = { x: 34, y: 77 };
         break;
       case "idukki-dam":
-        pathSegments = [
-          { x: 42, y: 55 },
-          { x: 35, y: 50 },
-          { x: 28, y: 48 },
-          { x: 20, y: 45 }
-        ];
+        end = { x: 20, y: 45 };
+        curve1 = { x: 39, y: 59 };
+        curve2 = { x: 26, y: 50 };
         break;
       default:
         return "";
     }
-
-    let path = `M ${startX} ${startY}`;
-    pathSegments.forEach((point, index) => {
-      if (index === 0) {
-        const controlX = (startX + point.x) / 2 + Math.sin(index) * 2;
-        const controlY = (startY + point.y) / 2 + Math.cos(index) * 2;
-        path += ` Q ${controlX} ${controlY}, ${point.x} ${point.y}`;
-      } else {
-        const prevPoint = pathSegments[index - 1];
-        const controlX = (prevPoint.x + point.x) / 2 + Math.sin(index) * 1.5;
-        const controlY = (prevPoint.y + point.y) / 2 + Math.cos(index) * 1.5;
-        path += ` Q ${controlX} ${controlY}, ${point.x} ${point.y}`;
-      }
-    });
-    
-    return path;
+    // Cubic Bezier for smooth, realistic path
+    return `M ${startX} ${startY} C ${curve1.x} ${curve1.y}, ${curve2.x} ${curve2.y}, ${end.x} ${end.y}`;
   };
 
   const getNodePosition = (activityId: string) => {
@@ -226,32 +194,25 @@ const NearbyMap: React.FC = () => {
 
   return (
     <section className="nearby-map relative w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-emerald-200 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-amber-200 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-emerald-100/20 to-transparent rounded-full"></div>
+      <div className="absolute inset-0 pointer-events-none">
+        {/* much subtler background */}
+        <div className="absolute top-28 left-12 w-48 h-48 bg-emerald-100/40 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-16 right-12 w-56 h-56 bg-amber-100/40 rounded-full blur-3xl"></div>
       </div>
 
       <div className="w-full relative">
-        {/* Enhanced Header */}
         <div className="relative z-10 text-center py-16">
-          <h2 className="text-6xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-600 bg-clip-text text-transparent mb-6">
+          <h2 className="text-5xl font-extrabold tracking-tight text-emerald-700 mb-4">
             Kerala's Hidden Treasures
           </h2>
-          <p className="text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed mb-8">
-            Embark on an extraordinary journey through the mystical landscapes around Nedumkandam
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-6">
+            Embark on an extraordinary journey through the mystical landscapes around Nedumkandam.
           </p>
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent rounded-full"></div>
-            <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full animate-pulse"></div>
-            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent rounded-full"></div>
-          </div>
+          <div className="mx-auto w-24 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full"></div>
         </div>
 
-        <div className="relative w-full h-[120vh] bg-transparent">
-          
-          {/* Enhanced Path SVG Layer */}
+        <div className="relative w-full h-[90vh] bg-transparent">
+          {/* --- Smoothed SVG Path Layer --- */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -259,287 +220,137 @@ const NearbyMap: React.FC = () => {
             style={{ zIndex: 1 }}
           >
             <defs>
-              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#10b981" />
-                <stop offset="50%" stopColor="#06b6d4" />
+              <linearGradient id="pathGradientAesthetic" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#34d399" />
                 <stop offset="100%" stopColor="#f59e0b" />
               </linearGradient>
-              <filter id="pathGlow">
-                <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
-                <feMerge> 
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
+              <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.5" result="glow" />
+                <feMerge>
+                  <feMergeNode in="glow" />
+                  <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
             </defs>
-            
-            {destinationNodes.map((destination, index) => (
-              <g key={`${destination.id}-road`}>
-                <path
-                  d={generatePath(destination)}
-                  stroke="url(#pathGradient)"
-                  strokeWidth="1.5"
-                  fill="none"
-                  filter="url(#pathGlow)"
-                  strokeDasharray="8 4"
-                  strokeLinecap="round"
-                  strokeOpacity={hoveredPath === destination.id ? 1 : 0.7}
-                  style={{ 
-                    animation: `pathDraw 3s ease-out forwards`,
-                    animationDelay: `${index * 400}ms`,
-                    transition: 'stroke-opacity 0.3s ease'
-                  }}
-                  onMouseEnter={() => setHoveredPath(destination.id)}
-                  onMouseLeave={() => setHoveredPath(null)}
-                />
-                <path
-                  d={generatePath(destination)}
-                  stroke="rgba(255,255,255,0.8)"
-                  strokeWidth="0.5"
-                  fill="none"
-                  strokeDasharray="4 8"
-                  strokeLinecap="round"
-                  style={{ 
-                    animation: `pathDraw 3s ease-out forwards`,
-                    animationDelay: `${index * 400 + 200}ms`,
-                  }}
-                />
-              </g>
+            {destinationNodes.map((destination, idx) => (
+              <path
+                key={destination.id}
+                d={generatePath(destination)}
+                stroke="url(#pathGradientAesthetic)"
+                strokeWidth="2.5"
+                fill="none"
+                filter="url(#pathSoftGlow)"
+                strokeLinecap="round"
+                opacity={hoveredPath === destination.id ? 0.95 : 0.65}
+                style={{
+                  transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
+                  strokeDasharray: "3 2",
+                }}
+                onMouseEnter={() => setHoveredPath(destination.id)}
+                onMouseLeave={() => setHoveredPath(null)}
+              />
             ))}
           </svg>
 
-          {/* Enhanced Central Nedumkandam Node */}
+          {/* --- Main Node (Nedumkandam) --- */}
           {nedumNode && (
             <div
-              className="absolute z-30 translate-x-[-50%] translate-y-[-50%]"
-              style={{ top: "60%", left: "50%" }}
+              className="absolute z-30"
+              style={{ top: "60%", left: "50%", transform: "translate(-50%, -50%)" }}
             >
               <div
-                className={`transition-all duration-700 group ${
-                  activeNode === "nedum" ? 'scale-110' : 'hover:scale-105'
-                }`}
+                className="flex flex-col items-center group"
                 onMouseEnter={() => setActiveNode("nedum")}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="relative">
-                  {/* Enhanced Root Node Effects */}
-                  <div className="absolute inset-0 -m-8">
-                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-ping"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-full animate-pulse"></div>
-                  </div>
-                  
-                  {/* Enhanced Main Circle */}
-                  <div className="relative w-48 h-48 rounded-full overflow-hidden shadow-2xl z-10 ring-4 ring-white/50 group-hover:ring-emerald-400/50 transition-all duration-500">
-                    <img
-                      src={nedumNode.icon}
-                      alt={nedumNode.label}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30"></div>
-                    <div className="absolute inset-0 border-4 border-gradient-to-r from-emerald-400 to-teal-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </div>
-
-                  {/* Enhanced Label */}
-                  <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
-                    <p className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent whitespace-nowrap mb-1">
-                      {nedumNode.label}
-                    </p>
-                    <span className="text-sm font-medium text-emerald-600 bg-emerald-100 px-4 py-1 rounded-full">
-                      Your Gateway
-                    </span>
-                  </div>
+                <div className="w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300">
+                  <img
+                    src={nedumNode.icon}
+                    alt={nedumNode.label}
+                    className="w-28 h-28 rounded-full object-cover"
+                  />
+                </div>
+                <div className="mt-3">
+                  <span className="block text-xl font-semibold text-emerald-700">{nedumNode.label}</span>
+                  <span className="text-xs text-emerald-500 font-medium">Your Gateway</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Enhanced Destination Nodes */}
-          {destinationNodes.map((activity, index) => {
+          {/* --- Destination Nodes (detailed, modern, but subtle) --- */}
+          {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
-            const visualImage = getVisualImage(activity.id);
-            
             return (
               <div
                 key={activity.id}
-                className={`absolute z-20 cursor-pointer transition-all duration-1000 ${
-                  animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-                }`}
+                className="absolute z-20 cursor-pointer group"
                 style={{
                   top: position.top,
                   left: position.left,
                   transform: "translate(-50%, -50%)",
-                  transitionDelay: `${index * 300 + 500}ms`
+                  transitionDelay: `${idx * 200 + 400}ms`,
                 }}
                 onClick={() => handleNodeClick(activity.id)}
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                {/* Enhanced Wave Effect */}
-                <div className="absolute inset-0 -m-6 flex items-center justify-center">
-                  <div
-                    className="absolute w-full h-full bg-gradient-to-r from-amber-400/20 to-orange-400/20 rounded-full transition-all duration-700"
-                    style={{
-                      transform: activeNode === activity.id ? 'scale(2.5)' : 'scale(1)',
-                      opacity: activeNode === activity.id ? 0.6 : 0
-                    }}
+                <div className={`w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300`}>
+                  <img
+                    src={activity.icon}
+                    alt={activity.label}
+                    className="w-14 h-14 object-cover rounded-full"
                   />
                 </div>
-
-                {/* Enhanced Destination Node */}
-                <div
-                  className={`relative rounded-full shadow-xl transition-all duration-700 group hover:shadow-2xl overflow-hidden
-                    w-36 h-36 bg-white ring-4 ring-white/70 hover:ring-amber-400/70 ${
-                    activeNode === activity.id ? 'scale-110 ring-amber-500/80' : 'scale-100 hover:scale-105'
-                  }`}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full">
-                    {visualImage ? (
-                      <img
-                        src={visualImage}
-                        alt={activity.label}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                    ) : (
-                      <img
-                        src={activity.icon}
-                        alt={activity.label}
-                        className="w-18 h-18 group-hover:scale-110 transition-transform duration-500"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 group-hover:to-white/50 transition-all duration-500"></div>
-                  </div>
-                  
-                  {/* Distance Badge */}
+                {/* Label */}
+                <div className="text-center mt-1">
+                  <span className="block font-medium text-slate-800">{activity.label}</span>
                   {activity.distance && (
-                    <div className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                      {activity.distance}
-                    </div>
+                    <span className="inline-block text-xs mt-1 text-amber-500 rounded-md px-2 py-0.5 bg-amber-100/60">{activity.distance}</span>
                   )}
                 </div>
-
-                {/* Enhanced Label */}
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 text-center">
-                  <p className="text-lg font-bold text-slate-800 whitespace-nowrap mb-1">
-                    {activity.label}
-                  </p>
-                  {activity.time && (
-                    <span className="text-sm text-slate-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">
-                      {activity.time}
-                    </span>
-                  )}
-                </div>
-
-                {/* Enhanced Tooltip */}
+                {/* --- Minimal Card Tooltip, but with better detail --- */}
                 {activeNode === activity.id && (
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-16 w-80 bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 border border-white/50 animate-fade-in z-40">
-                    <h3 className="font-bold text-xl text-slate-800 mb-3">{activity.label}</h3>
-                    {activity.distance && activity.time && (
-                      <div className="flex justify-between items-center mb-4 p-3 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl">
-                        <span className="text-sm font-medium text-slate-600">
-                          <span className="text-amber-600">Distance:</span> {activity.distance}
-                        </span>
-                        <span className="text-sm font-medium text-slate-600">
-                          <span className="text-emerald-600">Time:</span> {activity.time}
-                        </span>
-                      </div>
+                  <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50 w-52 bg-white border border-slate-200 rounded-xl shadow-xl p-4 animate-fade-in select-none">
+                    <div className="font-semibold text-slate-900 mb-2">{activity.label}</div>
+                    {activity.highlights && (
+                      <div className="text-sm text-slate-700 mb-1">{activity.highlights[0]}</div>
                     )}
-                    <div className="mb-4">
-                      <h4 className="font-bold text-slate-700 mb-3">Highlights</h4>
-                      <div className="space-y-2">
-                        {activity.highlights.map((highlight, idx) => (
-                          <div key={idx} className="flex items-center gap-3 p-2 bg-white/60 rounded-lg">
-                            <div className="w-2 h-2 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full flex-shrink-0"></div>
-                            <span className="text-sm font-medium text-slate-700">{highlight}</span>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
+                      {activity.distance && <span>📏 {activity.distance}</span>}
+                      {activity.time && <span>⏱ {activity.time}</span>}
                     </div>
-                    <a
-                      href={`https://wa.me/919495107933?text=${encodeURIComponent(`Planning to visit ${activity.label}`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white text-center font-bold transition-all duration-300 transform hover:scale-105 shadow-lg"
-                    >
-                      Plan Your Visit
-                    </a>
                   </div>
                 )}
               </div>
             );
           })}
 
-          {/* Enhanced Legend */}
-          <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-md border border-white/50 rounded-3xl px-8 py-6 shadow-2xl z-30">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-slate-700 to-slate-600 bg-clip-text text-transparent mb-4">
-              Map Legend
-            </h3>
-            <div className="space-y-4 text-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full border-4 border-white shadow-lg" />
-                <span className="font-medium text-slate-700">Your Current Location</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-white border-4 border-amber-400 rounded-full shadow-lg" />
-                <span className="font-medium text-slate-700">Tourist Destinations</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <svg width="24" height="12" className="flex-shrink-0">
-                  <defs>
-                    <linearGradient id="legendGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#10b981" />
-                      <stop offset="100%" stopColor="#f59e0b" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M2 6 L22 6" stroke="url(#legendGradient)" strokeWidth="3" strokeDasharray="6 3" strokeLinecap="round" />
-                </svg>
-                <span className="font-medium text-slate-700">Scenic Routes</span>
-              </div>
+          {/* --- Modern Legend (simpler, clear) --- */}
+          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-5 h-5 rounded-full bg-emerald-400"></div>
+              <span className="text-sm text-slate-700 font-medium">Your Location</span>
+            </div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-5 h-5 rounded-full bg-white border border-amber-200"></div>
+              <span className="text-sm text-slate-700 font-medium">Destinations</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <svg width="32" height="12"><path d="M1 6 Q 12 1 31 6" stroke="#fbbf24" strokeWidth="2" fill="none" /></svg>
+              <span className="text-sm text-slate-700 font-medium">Scenic Route</span>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Enhanced CSS Animations */}
+      {/* --- Minimal animation overrides --- */}
       <style>{`
-        @keyframes pathDraw {
-          0% {
-            stroke-dasharray: 0 1000;
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            stroke-dasharray: 1000 0;
-            opacity: 1;
-          }
-        }
-        
         .animate-fade-in {
-          animation: fadeInUp 0.6s ease-out forwards;
+          animation: fadeInUp 0.3s cubic-bezier(.4,2,.1,.9) both;
         }
-        
         @keyframes fadeInUp {
-          from { 
-            opacity: 0; 
-            transform: translateX(-50%) translateY(20px) scale(0.95); 
-          }
-          to { 
-            opacity: 1; 
-            transform: translateX(-50%) translateY(0) scale(1); 
-          }
-        }
-
-        .bg-gradient-radial {
-          background: radial-gradient(circle, var(--tw-gradient-stops));
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-          }
+          from { opacity:0; transform:translateX(-50%) translateY(14px) scale(0.97);}
+          to   { opacity:1; transform:translateX(-50%) translateY(0) scale(1);}
         }
       `}</style>
     </section>
