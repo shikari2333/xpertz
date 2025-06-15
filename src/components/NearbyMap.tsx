@@ -212,7 +212,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* === Redefined SVG Path Layer (thin, brown, elegant, MORE DENSE DOTS) === */}
+          {/* === Ultra-refined SVG Path Layer (tiny dots, long road effect) === */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -233,22 +233,40 @@ const NearbyMap: React.FC = () => {
               </filter>
             </defs>
             {destinationNodes.map((destination, idx) => (
-              <path
-                key={destination.id}
-                d={generatePath(destination)}
-                stroke="url(#brownRouteGradient)"
-                strokeWidth="1.2"
-                fill="none"
-                filter="url(#pathSoftGlow)"
-                strokeLinecap="round"
-                opacity={hoveredPath === destination.id ? 0.85 : 0.55}
-                style={{
-                  transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                  strokeDasharray: "0.7 1.4", // MUCH smaller, more frequent dots
-                }}
-                onMouseEnter={() => setHoveredPath(destination.id)}
-                onMouseLeave={() => setHoveredPath(null)}
-              />
+              <g key={destination.id}>
+                {/* Main dotted road */}
+                <path
+                  d={generatePath(destination)}
+                  stroke="url(#brownRouteGradient)"
+                  strokeWidth="0.8"
+                  fill="none"
+                  filter="url(#pathSoftGlow)"
+                  strokeLinecap="round"
+                  opacity={hoveredPath === destination.id ? 0.9 : 0.6}
+                  style={{
+                    transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
+                    strokeDasharray: "0.3 0.8", // Very small dots with small gaps
+                  }}
+                  onMouseEnter={() => setHoveredPath(destination.id)}
+                  onMouseLeave={() => setHoveredPath(null)}
+                />
+                {/* Secondary parallel dotted line for road effect */}
+                <path
+                  d={generatePath(destination)}
+                  stroke="url(#brownRouteGradient)"
+                  strokeWidth="0.4"
+                  fill="none"
+                  strokeLinecap="round"
+                  opacity={hoveredPath === destination.id ? 0.5 : 0.3}
+                  style={{
+                    transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
+                    strokeDasharray: "0.2 1.2", // Even smaller dots, longer gaps
+                    transform: "translate(0.5px, 0.5px)", // Slight offset for double line effect
+                  }}
+                  onMouseEnter={() => setHoveredPath(destination.id)}
+                  onMouseLeave={() => setHoveredPath(null)}
+                />
+              </g>
             ))}
           </svg>
 
