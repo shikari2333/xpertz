@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -25,43 +24,48 @@ const NearbyMap: React.FC = () => {
   const nedumNode = activities.find(a => a.id === "nedum");
   const destinationNodes = activities.filter(a => a.id !== "nedum");
 
-  // === Enhanced path generation with wave-like curves ===
+  // === Enhanced path generation with longer, more dramatic curves ===
   const generatePath = (destination: any) => {
     if (!nedumNode || destination.id === "nedum") return "";
     const startX = 50;
     const startY = 60;
-    let end, curve1, curve2;
+    let end, curve1, curve2, curve3;
 
     switch (destination.id) {
       case "munnar":
-        end = { x: 25, y: 20 };
-        curve1 = { x: 42, y: 45 };
-        curve2 = { x: 30, y: 30 };
+        end = { x: 15, y: 15 };
+        curve1 = { x: 45, y: 45 };
+        curve2 = { x: 25, y: 25 };
+        curve3 = { x: 18, y: 18 };
         break;
       case "thekkady":
-        end = { x: 78, y: 75 };
-        curve1 = { x: 60, y: 65 };
-        curve2 = { x: 74, y: 58 };
+        end = { x: 85, y: 85 };
+        curve1 = { x: 65, y: 70 };
+        curve2 = { x: 78, y: 65 };
+        curve3 = { x: 82, y: 80 };
         break;
       case "ramakkalmedu":
-        end = { x: 72, y: 50 };
-        curve1 = { x: 56, y: 56 };
-        curve2 = { x: 68, y: 54 };
+        end = { x: 85, y: 45 };
+        curve1 = { x: 60, y: 58 };
+        curve2 = { x: 75, y: 52 };
+        curve3 = { x: 82, y: 48 };
         break;
       case "vagamon":
-        end = { x: 30, y: 85 };
-        curve1 = { x: 44, y: 70 };
-        curve2 = { x: 34, y: 77 };
+        end = { x: 20, y: 90 };
+        curve1 = { x: 42, y: 75 };
+        curve2 = { x: 28, y: 82 };
+        curve3 = { x: 22, y: 88 };
         break;
       case "idukki-dam":
-        end = { x: 20, y: 45 };
-        curve1 = { x: 39, y: 59 };
-        curve2 = { x: 26, y: 50 };
+        end = { x: 10, y: 40 };
+        curve1 = { x: 35, y: 55 };
+        curve2 = { x: 18, y: 48 };
+        curve3 = { x: 12, y: 42 };
         break;
       default:
         return "";
     }
-    return `M ${startX} ${startY} C ${curve1.x} ${curve1.y}, ${curve2.x} ${curve2.y}, ${end.x} ${end.y}`;
+    return `M ${startX} ${startY} C ${curve1.x} ${curve1.y}, ${curve2.x} ${curve2.y}, ${curve3.x} ${curve3.y} S ${end.x + 2} ${end.y + 1}, ${end.x} ${end.y}`;
   };
 
   const getNodePosition = (activityId: string) => {
@@ -69,15 +73,15 @@ const NearbyMap: React.FC = () => {
       case "nedum":
         return { top: "60%", left: "50%" };
       case "munnar":
-        return { top: "20%", left: "25%" };
+        return { top: "15%", left: "15%" };
       case "thekkady":
-        return { top: "75%", left: "78%" };
+        return { top: "85%", left: "85%" };
       case "ramakkalmedu":
-        return { top: "50%", left: "72%" };
+        return { top: "45%", left: "85%" };
       case "vagamon":
-        return { top: "85%", left: "30%" };
+        return { top: "90%", left: "20%" };
       case "idukki-dam":
-        return { top: "45%", left: "20%" };
+        return { top: "40%", left: "10%" };
       default:
         return { top: "50%", left: "50%" };
     }
@@ -112,19 +116,19 @@ const NearbyMap: React.FC = () => {
       </div>
 
       <div className="w-full relative">
-        <div className={`relative z-10 text-center py-8 md:py-16 transition-all duration-1200 ${
+        <div className={`relative z-10 text-center ${isMobile ? 'py-4' : 'py-8 md:py-16'} transition-all duration-1200 ${
           animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-emerald-700 mb-2 md:mb-4 animate-text-glow px-4">
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-4xl lg:text-5xl xl:text-6xl'} font-extrabold tracking-tight text-emerald-700 ${isMobile ? 'mb-1' : 'mb-2 md:mb-4'} animate-text-glow px-4`}>
             Kerala's Hidden Treasures
           </h2>
-          <p className="text-sm md:text-lg lg:text-xl text-slate-600 max-w-3xl mx-auto mb-4 md:mb-6 px-4">
+          <p className={`${isMobile ? 'text-xs' : 'text-sm md:text-lg lg:text-xl'} text-slate-600 max-w-3xl mx-auto ${isMobile ? 'mb-2' : 'mb-4 md:mb-6'} px-4`}>
             Embark on an extraordinary journey through the mystical landscapes around Nedumkandam.
           </p>
-          <div className="mx-auto w-16 md:w-24 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full animate-expand"></div>
+          <div className={`mx-auto ${isMobile ? 'w-12 h-0.5' : 'w-16 md:w-24 h-1'} bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full animate-expand`}></div>
         </div>
 
-        <div className="relative w-full h-[60vh] md:h-[80vh] lg:h-[90vh] bg-transparent">
+        <div className={`relative w-full ${isMobile ? 'h-[75vh]' : 'h-[60vh] md:h-[80vh] lg:h-[90vh]'} bg-transparent`}>
           {/* SVG Path Layer with enhanced animations */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
@@ -150,11 +154,11 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.3" : "0.5"}
+                  strokeWidth={isMobile ? "0.4" : "0.5"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 0.9 : animateIn ? 0.6 : 0}
+                  opacity={hoveredPath === destination.id ? 0.9 : animateIn ? 0.7 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
                     strokeDasharray: "0.5 0.75",
@@ -187,7 +191,7 @@ const NearbyMap: React.FC = () => {
                 onMouseLeave={() => setActiveNode(null)}
                 onClick={() => handleNodeClick("nedum")}
               >
-                <div className={`relative ${isMobile ? 'w-20 h-20' : 'w-32 h-32 md:w-36 md:h-36'} rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-500 overflow-hidden group-hover:shadow-2xl group-hover:scale-110`}>
+                <div className={`relative ${isMobile ? 'w-16 h-16' : 'w-32 h-32 md:w-36 md:h-36'} rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-500 overflow-hidden group-hover:shadow-2xl group-hover:scale-110`}>
                   {/* Enhanced pulsing waves for the root node */}
                   <div className="absolute inset-0 rounded-full bg-emerald-400/30 animate-ping"></div>
                   <div className="absolute inset-0 rounded-full bg-emerald-400/40 animate-pulse"></div>
@@ -199,9 +203,9 @@ const NearbyMap: React.FC = () => {
                     className="w-full h-full object-cover rounded-full relative z-10 transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="mt-2 text-center">
+                <div className="mt-1 text-center">
                   <span className={`block ${isMobile ? 'text-sm' : 'text-lg md:text-xl'} font-semibold text-emerald-700 group-hover:text-emerald-800 transition-colors duration-300`}>{nedumNode.label}</span>
-                  <span className="text-xs text-emerald-500 font-medium animate-pulse">Your Gateway</span>
+                  <span className={`${isMobile ? 'text-xs' : 'text-xs'} text-emerald-500 font-medium animate-pulse`}>Your Gateway</span>
                 </div>
               </div>
             </div>
@@ -226,7 +230,7 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className={`relative ${isMobile ? 'w-14 h-14' : 'w-20 h-20 md:w-24 md:h-24'} rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-500 overflow-hidden group-hover:scale-125 group-active:scale-95`}>
+                <div className={`relative ${isMobile ? 'w-12 h-12' : 'w-20 h-20 md:w-24 md:h-24'} rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-500 overflow-hidden group-hover:scale-125 group-active:scale-95`}>
                   {/* Enhanced pulsing waves for destination nodes */}
                   <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-ping"></div>
                   <div className="absolute inset-0 rounded-full bg-amber-400/30 animate-pulse"></div>
@@ -247,7 +251,7 @@ const NearbyMap: React.FC = () => {
                 
                 {/* Mobile-optimized popup */}
                 {activeNode === activity.id && (
-                  <div className={`absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50 ${isMobile ? 'w-48' : 'w-52'} bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-xl p-3 md:p-4 animate-fade-in-up select-none`}>
+                  <div className={`absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50 ${isMobile ? 'w-44' : 'w-52'} bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-xl p-3 md:p-4 animate-fade-in-up select-none`}>
                     <div className={`font-semibold text-slate-900 mb-2 ${isMobile ? 'text-sm' : ''}`}>{activity.label}</div>
                     {activity.highlights && (
                       <div className={`text-slate-700 mb-1 ${isMobile ? 'text-xs' : 'text-sm'}`}>{activity.highlights[0]}</div>
@@ -273,34 +277,34 @@ const NearbyMap: React.FC = () => {
           })}
 
           {/* Enhanced Legend with mobile responsiveness */}
-          <div className={`absolute ${isMobile ? 'top-2 right-2' : 'top-4 md:top-10 right-4 md:right-8'} bg-white/95 backdrop-blur-sm rounded-xl border border-slate-100 ${isMobile ? 'px-3 py-2' : 'px-4 md:px-6 py-3 md:py-4'} shadow-lg z-30 transition-all duration-1000 ${
+          <div className={`absolute ${isMobile ? 'top-2 right-2' : 'top-4 md:top-10 right-4 md:right-8'} bg-white/95 backdrop-blur-sm rounded-xl border border-slate-100 ${isMobile ? 'px-2 py-1' : 'px-4 md:px-6 py-3 md:py-4'} shadow-lg z-30 transition-all duration-1000 ${
             animateIn ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
           }`} style={{ transitionDelay: '1400ms' }}>
             <div className={`flex items-center gap-2 md:gap-3 ${isMobile ? 'mb-1' : 'mb-2'}`}>
-              <div className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4 md:w-5 md:h-5'} bg-emerald-400 rounded-full animate-pulse`}></div>
+              <div className={`${isMobile ? 'w-2 h-2' : 'w-4 h-4 md:w-5 md:h-5'} bg-emerald-400 rounded-full animate-pulse`}></div>
               <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Your Location</span>
             </div>
             <div className={`flex items-center gap-2 md:gap-3 ${isMobile ? 'mb-1' : 'mb-2'}`}>
-              <div className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4 md:w-5 md:h-5'} bg-white border border-amber-200 rounded-full animate-pulse`} style={{ animationDelay: '0.5s' }}></div>
+              <div className={`${isMobile ? 'w-2 h-2' : 'w-4 h-4 md:w-5 md:h-5'} bg-white border border-amber-200 rounded-full animate-pulse`} style={{ animationDelay: '0.5s' }}></div>
               <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Destinations</span>
             </div>
             <div className={`flex items-center gap-2 md:gap-3`}>
-              <svg width={isMobile ? "20" : "28"} height={isMobile ? "8" : "10"} className="md:w-8 md:h-3">
-                <path d={isMobile ? "M1 4 Q 5 2 10 4 Q 15 6 19 4" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#fbbf24" strokeWidth="2" fill="none" strokeDasharray="1 1.5" className="animate-pulse" />
+              <svg width={isMobile ? "16" : "28"} height={isMobile ? "6" : "10"} className="md:w-8 md:h-3">
+                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#fbbf24" strokeWidth="1.5" fill="none" strokeDasharray="1 1.5" className="animate-pulse" />
               </svg>
-              <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Scenic Route</span>
+              <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Route</span>
             </div>
           </div>
         </div>
 
-        {/* Mobile-specific additional info section */}
+        {/* Mobile-specific additional info section - moved below map */}
         {isMobile && (
-          <div className="px-4 pb-6">
-            <div className="grid gap-4 mt-6">
+          <div className="px-4 pb-4">
+            <div className="grid gap-3 mt-4">
               {activities.slice(0, 3).map((activity, index) => (
                 <div
                   key={activity.id}
-                  className={`bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-4 transition-all duration-700 transform ${
+                  className={`bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-3 transition-all duration-700 transform ${
                     animateIn ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'
                   }`}
                   style={{ 
@@ -308,7 +312,7 @@ const NearbyMap: React.FC = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-full overflow-hidden shadow-md ${
+                    <div className={`w-10 h-10 rounded-full overflow-hidden shadow-md ${
                       activity.id === "nedum" 
                         ? "bg-gradient-to-br from-emerald-500 to-emerald-600" 
                         : "bg-gradient-to-br from-amber-500 to-orange-500"
@@ -320,7 +324,7 @@ const NearbyMap: React.FC = () => {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-sm font-bold text-slate-800">
+                      <h3 className="text-xs font-bold text-slate-800">
                         {activity.label}
                       </h3>
                       {activity.distance && activity.time && (
@@ -338,6 +342,7 @@ const NearbyMap: React.FC = () => {
         )}
       </div>
 
+      {/* ... keep existing code (styles section) */}
       <style>{`
         @keyframes slideInUp {
           from { 
