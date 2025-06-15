@@ -28,6 +28,7 @@ const NearbyMap: React.FC = () => {
   // === Enhanced path generation with more realistic curves ===
   const generatePath = (destination: any) => {
     if (!nedumNode || destination.id === "nedum") return "";
+    // Re-center curves for more 'organic' and realistic feel
     const startX = 50;
     const startY = 60;
     let end, curve1, curve2;
@@ -61,6 +62,7 @@ const NearbyMap: React.FC = () => {
       default:
         return "";
     }
+    // Cubic Bezier for smooth, realistic path
     return `M ${startX} ${startY} C ${curve1.x} ${curve1.y}, ${curve2.x} ${curve2.y}, ${end.x} ${end.y}`;
   };
 
@@ -83,6 +85,11 @@ const NearbyMap: React.FC = () => {
     }
   };
 
+  const getVisualImage = (activityId: string) => {
+    const activity = activities.find(a => a.id === activityId);
+    return activity ? activity.icon : null;
+  };
+
   const handleNodeClick = (nodeId: string) => {
     if (activeNode === nodeId) {
       setActiveNode(null);
@@ -93,97 +100,76 @@ const NearbyMap: React.FC = () => {
 
   if (isMobile) {
     return (
-      <section className="nearby-map bg-gradient-to-br from-slate-50 via-emerald-50 to-amber-50 py-20">
+      <section className="nearby-map bg-gradient-to-br from-slate-50 via-emerald-50 to-amber-50 py-16">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-4">
-              <span className="text-sm font-semibold text-emerald-600 bg-emerald-100 px-4 py-2 rounded-full tracking-wide uppercase">
-                Premium Destinations
-              </span>
-            </div>
-            <h2 className="text-6xl font-black bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent mb-6 leading-tight">
-              Discover Kerala's
-              <br />
-              Hidden Gems
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-amber-600 bg-clip-text text-transparent mb-4">
+              Discover Kerala's Gems
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-8">
-              Journey through the enchanting destinations around Nedumkandam, where every path leads to extraordinary experiences
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Journey through the enchanting destinations around Nedumkandam
             </p>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 mx-auto rounded-full shadow-lg"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mt-6 rounded-full"></div>
           </div>
           
-          <div className="grid gap-10 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2">
             {activities.map((activity, index) => (
               <div
                 key={activity.id}
-                className={`group relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl p-8 transition-all duration-700 hover:-translate-y-3 border border-white/60 overflow-hidden ${
-                  animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                className={`group bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl p-8 transition-all duration-700 hover:-translate-y-2 border border-white/50 ${
+                  animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none"></div>
-                
-                <div className="relative flex items-center mb-8">
-                  <div className={`relative w-24 h-24 rounded-3xl flex items-center justify-center overflow-hidden shadow-xl group-hover:scale-110 transition-transform duration-500 ${
+                <div className="flex items-center mb-6">
+                  <div className={`relative w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-500 ${
                     activity.id === "nedum" 
-                      ? "bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700" 
-                      : "bg-gradient-to-br from-amber-500 via-orange-500 to-red-500"
+                      ? "bg-gradient-to-br from-emerald-500 to-emerald-600" 
+                      : "bg-gradient-to-br from-amber-500 to-orange-500"
                   }`}>
                     <img
                       src={activity.icon}
                       alt={activity.label}
-                      className={`${activity.id === "nedum" ? "w-full h-full object-cover" : "w-12 h-12 filter brightness-0 invert"}`}
+                      className={`${activity.id === "nedum" ? "w-full h-full object-cover" : "w-10 h-10 filter brightness-0 invert"}`}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/30"></div>
-                    {activity.id === "nedum" && (
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center">
-                        <span className="text-xs">⭐</span>
-                      </div>
-                    )}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/20"></div>
                   </div>
-                  <div className="ml-8">
-                    <h3 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">
+                  <div className="ml-6">
+                    <h3 className="text-2xl font-bold text-slate-800 mb-1">
                       {activity.label}
                     </h3>
-                    {activity.id === "nedum" ? (
-                      <span className="text-sm font-bold text-emerald-700 bg-gradient-to-r from-emerald-100 to-emerald-200 px-4 py-2 rounded-full shadow-md">
-                        🏠 Your Base Camp
-                      </span>
-                    ) : (
-                      <span className="text-sm font-bold text-amber-700 bg-gradient-to-r from-amber-100 to-orange-200 px-4 py-2 rounded-full shadow-md">
-                        🗺️ Adventure Awaits
+                    {activity.id === "nedum" && (
+                      <span className="text-sm font-medium text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">
+                        Your Base
                       </span>
                     )}
                   </div>
                 </div>
                 
                 {activity.distance && activity.time && (
-                  <div className="relative mb-8 p-6 bg-gradient-to-r from-slate-50 via-white to-slate-50 rounded-2xl border border-slate-200/50 shadow-inner">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full shadow-sm"></div>
-                        <span className="text-base font-bold text-slate-700">
-                          {activity.distance}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-3 h-3 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full shadow-sm"></div>
-                        <span className="text-base font-bold text-slate-700">
-                          {activity.time}
-                        </span>
-                      </div>
+                  <div className="flex items-center gap-4 mb-6 p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-2xl">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                      <span className="text-sm font-medium text-slate-600">
+                        {activity.distance}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                      <span className="text-sm font-medium text-slate-600">
+                        {activity.time}
+                      </span>
                     </div>
                   </div>
                 )}
                 
-                <div className="mb-8">
-                  <h4 className="font-black text-slate-800 mb-6 text-xl tracking-tight">✨ Experience Highlights</h4>
-                  <div className="grid gap-4">
+                <div className="mb-6">
+                  <h4 className="font-bold text-slate-700 mb-4 text-lg">Experience Highlights</h4>
+                  <div className="grid gap-3">
                     {activity.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center gap-4 p-4 bg-gradient-to-r from-white/80 to-white/60 rounded-2xl border border-white/40 shadow-sm hover:shadow-md transition-shadow duration-300">
-                        <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 rounded-full flex-shrink-0 shadow-sm"></div>
-                        <span className="text-slate-800 font-semibold text-base">{highlight}</span>
+                      <div key={idx} className="flex items-center gap-3 p-3 bg-white/60 rounded-xl">
+                        <div className="w-2 h-2 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full flex-shrink-0"></div>
+                        <span className="text-slate-700 font-medium">{highlight}</span>
                       </div>
                     ))}
                   </div>
@@ -194,10 +180,9 @@ const NearbyMap: React.FC = () => {
                     href={`https://wa.me/919495107933?text=${encodeURIComponent(`Planning to visit ${activity.label}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative block w-full py-5 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 hover:from-emerald-700 hover:via-emerald-600 hover:to-teal-600 text-white text-center font-black text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl overflow-hidden group"
+                    className="block w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white text-center font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                    <span className="relative">🚀 Plan Your Journey</span>
+                    Plan Your Journey
                   </a>
                 )}
               </div>
@@ -209,38 +194,26 @@ const NearbyMap: React.FC = () => {
   }
 
   return (
-    <section className="nearby-map relative w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden min-h-screen">
-      {/* Premium background effects */}
+    <section className="nearby-map relative w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
+      {/* much subtler background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-16 w-72 h-72 bg-gradient-to-br from-emerald-200/30 to-teal-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-16 w-80 h-80 bg-gradient-to-br from-amber-200/30 to-orange-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-br from-purple-200/20 to-pink-200/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-28 left-12 w-48 h-48 bg-emerald-100/40 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-16 right-12 w-56 h-56 bg-amber-100/40 rounded-full blur-3xl"></div>
       </div>
 
       <div className="w-full relative">
-        <div className="relative z-10 text-center py-20">
-          <div className="inline-block mb-6">
-            <span className="text-sm font-bold text-emerald-700 bg-gradient-to-r from-emerald-100 to-teal-100 px-6 py-3 rounded-full tracking-wider uppercase shadow-lg">
-              ✨ Premium Destinations
-            </span>
-          </div>
-          <h2 className="text-7xl font-black tracking-tight bg-gradient-to-r from-emerald-800 via-emerald-600 to-amber-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Kerala's Hidden
-            <br />
-            <span className="bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-              Treasures
-            </span>
+        <div className="relative z-10 text-center py-16">
+          <h2 className="text-5xl font-extrabold tracking-tight text-emerald-700 mb-4">
+            Kerala's Hidden Treasures
           </h2>
-          <p className="text-2xl text-slate-600 max-w-4xl mx-auto mb-10 leading-relaxed font-medium">
-            Embark on an extraordinary journey through the mystical landscapes around Nedumkandam,
-            <br />
-            where every path leads to extraordinary experiences.
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-6">
+            Embark on an extraordinary journey through the mystical landscapes around Nedumkandam.
           </p>
-          <div className="mx-auto w-40 h-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 rounded-full shadow-xl"></div>
+          <div className="mx-auto w-24 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full"></div>
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* Enhanced SVG paths with premium styling */}
+          {/* === Dashed road SVG paths, inspired by user image === */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -248,16 +221,14 @@ const NearbyMap: React.FC = () => {
             style={{ zIndex: 1 }}
           >
             <defs>
-              <linearGradient id="premiumRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="brownRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#8b5a3c" />
-                <stop offset="50%" stopColor="#a0522d" />
                 <stop offset="100%" stopColor="#5d3a1a" />
               </linearGradient>
-              <filter id="premiumPathGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="1.2" result="glow" />
-                <feColorMatrix in="glow" values="1 0 0 0 0.5  0 0.7 0 0 0.3  0 0 0.4 0 0.1  0 0 0 0.8 0" result="coloredGlow" />
+              <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="0.8" result="glow" />
                 <feMerge>
-                  <feMergeNode in="coloredGlow" />
+                  <feMergeNode in="glow" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
@@ -266,14 +237,14 @@ const NearbyMap: React.FC = () => {
               <path
                 key={destination.id}
                 d={generatePath(destination)}
-                stroke="url(#premiumRouteGradient)"
-                strokeWidth="1"
+                stroke="url(#brownRouteGradient)"
+                strokeWidth="0.8"
                 fill="none"
-                filter="url(#premiumPathGlow)"
+                filter="url(#pathSoftGlow)"
                 strokeLinecap="round"
-                opacity={hoveredPath === destination.id ? 1 : 0.8}
+                opacity={hoveredPath === destination.id ? 0.9 : 0.7}
                 style={{
-                  transition: "all 0.4s cubic-bezier(.6,.2,.4,1)",
+                  transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
                   strokeDasharray: "1 2",
                 }}
                 onMouseEnter={() => setHoveredPath(destination.id)}
@@ -282,39 +253,33 @@ const NearbyMap: React.FC = () => {
             ))}
           </svg>
 
-          {/* Premium Main Node (Nedumkandam) */}
+          {/* --- Main Node (Nedumkandam) --- */}
           {nedumNode && (
             <div
               className="absolute z-30"
               style={{ top: "60%", left: "50%", transform: "translate(-50%, -50%)" }}
             >
               <div
-                className="flex flex-col items-center group cursor-pointer"
+                className="flex flex-col items-center group"
                 onMouseEnter={() => setActiveNode("nedum")}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="relative w-44 h-44 rounded-full shadow-2xl bg-gradient-to-br from-white via-emerald-50 to-white border-4 border-emerald-200 flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-3xl">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500/10 to-teal-500/5"></div>
+                <div className="w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300">
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
-                    className="w-36 h-36 rounded-full object-cover shadow-lg ring-4 ring-white/50"
+                    className="w-28 h-28 rounded-full object-cover"
                   />
-                  <div className="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-xl">
-                    <span className="text-xl">⭐</span>
-                  </div>
                 </div>
-                <div className="mt-6 text-center">
-                  <span className="block text-2xl font-black text-emerald-800 tracking-tight">{nedumNode.label}</span>
-                  <span className="text-base text-emerald-600 font-bold bg-gradient-to-r from-emerald-100 to-teal-100 px-4 py-2 rounded-full mt-2 inline-block shadow-md">
-                    🏠 Your Gateway to Adventure
-                  </span>
+                <div className="mt-3">
+                  <span className="block text-xl font-semibold text-emerald-700">{nedumNode.label}</span>
+                  <span className="text-xs text-emerald-500 font-medium">Your Gateway</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Premium Destination Nodes */}
+          {/* --- Destination Nodes (detailed, modern, but subtle) --- */}
           {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
             return (
@@ -331,47 +296,30 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="relative w-32 h-32 rounded-full flex items-center justify-center shadow-xl bg-gradient-to-br from-white via-amber-50 to-white border-4 border-amber-200 hover:shadow-2xl transition-all duration-500 hover:scale-110">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-500/10 to-orange-500/5"></div>
+                <div className={`w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300`}>
                   <img
                     src={activity.icon}
                     alt={activity.label}
-                    className="w-20 h-20 object-cover rounded-full shadow-lg ring-4 ring-white/50"
+                    className="w-14 h-14 object-cover rounded-full"
                   />
                 </div>
-                
-                <div className="text-center mt-4">
-                  <span className="block font-black text-slate-900 text-lg tracking-tight">{activity.label}</span>
+                {/* Label */}
+                <div className="text-center mt-1">
+                  <span className="block font-medium text-slate-800">{activity.label}</span>
                   {activity.distance && (
-                    <span className="inline-block text-sm mt-2 text-amber-700 rounded-full px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 font-bold shadow-md">
-                      📍 {activity.distance}
-                    </span>
+                    <span className="inline-block text-xs mt-1 text-amber-500 rounded-md px-2 py-0.5 bg-amber-100/60">{activity.distance}</span>
                   )}
                 </div>
-                
-                {/* Premium tooltip */}
+                {/* --- Minimal Card Tooltip, but with better detail --- */}
                 {activeNode === activity.id && (
-                  <div className="absolute left-1/2 top-full mt-6 -translate-x-1/2 z-50 w-72 bg-white/95 backdrop-blur-xl border-2 border-slate-200/50 rounded-3xl shadow-2xl p-6 animate-fade-in select-none">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent rounded-3xl pointer-events-none"></div>
-                    <div className="relative">
-                      <div className="font-black text-slate-900 mb-3 text-xl tracking-tight">{activity.label}</div>
-                      {activity.highlights && (
-                        <div className="text-base text-slate-700 mb-4 font-medium leading-relaxed">{activity.highlights[0]}</div>
-                      )}
-                      <div className="flex items-center justify-between text-sm text-slate-600 bg-gradient-to-r from-slate-50 to-slate-100 p-3 rounded-2xl">
-                        {activity.distance && (
-                          <span className="flex items-center gap-2 font-semibold">
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                            {activity.distance}
-                          </span>
-                        )}
-                        {activity.time && (
-                          <span className="flex items-center gap-2 font-semibold">
-                            <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                            {activity.time}
-                          </span>
-                        )}
-                      </div>
+                  <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50 w-52 bg-white border border-slate-200 rounded-xl shadow-xl p-4 animate-fade-in select-none">
+                    <div className="font-semibold text-slate-900 mb-2">{activity.label}</div>
+                    {activity.highlights && (
+                      <div className="text-sm text-slate-700 mb-1">{activity.highlights[0]}</div>
+                    )}
+                    <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
+                      {activity.distance && <span>📏 {activity.distance}</span>}
+                      {activity.time && <span>⏱ {activity.time}</span>}
                     </div>
                   </div>
                 )}
@@ -379,50 +327,33 @@ const NearbyMap: React.FC = () => {
             );
           })}
 
-          {/* Premium Legend */}
-          <div className="absolute top-12 right-12 bg-white/95 backdrop-blur-xl rounded-3xl border-2 border-slate-200/50 px-8 py-6 shadow-2xl z-30">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent rounded-3xl pointer-events-none"></div>
-            <div className="relative">
-              <h3 className="font-black text-slate-900 mb-4 text-lg tracking-tight">🗺️ Map Legend</h3>
-              <div className="space-y-3">
-                <div className="flex items-center gap-4">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md"></div>
-                  <span className="text-sm text-slate-700 font-bold">Your Base Camp</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-md"></div>
-                  <span className="text-sm text-slate-700 font-bold">Destinations</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <svg width="40" height="16" className="shadow-sm">
-                    <path d="M4 8 Q 20 4 36 8" stroke="url(#premiumRouteGradient)" strokeWidth="2" fill="none" strokeDasharray="1 2" />
-                  </svg>
-                  <span className="text-sm text-slate-700 font-bold">Adventure Routes</span>
-                </div>
-              </div>
+          {/* --- Modern Legend (simpler, clear) --- */}
+          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-5 h-5 rounded-full bg-emerald-400"></div>
+              <span className="text-sm text-slate-700 font-medium">Your Location</span>
+            </div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-5 h-5 rounded-full bg-white border border-amber-200"></div>
+              <span className="text-sm text-slate-700 font-medium">Destinations</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <svg width="32" height="12">
+                <path d="M2 6 Q 16 2 30 6" stroke="#8b5a3c" strokeWidth="1" fill="none" strokeDasharray="1 2" />
+              </svg>
+              <span className="text-sm text-slate-700 font-medium">Roads</span>
             </div>
           </div>
         </div>
       </div>
-      
+      {/* --- Minimal animation overrides --- */}
       <style>{`
         .animate-fade-in {
-          animation: premiumFadeIn 0.5s cubic-bezier(.4,2,.1,.9) both;
+          animation: fadeInUp 0.3s cubic-bezier(.4,2,.1,.9) both;
         }
-        @keyframes premiumFadeIn {
-          from { 
-            opacity: 0; 
-            transform: translateX(-50%) translateY(20px) scale(0.95);
-            filter: blur(4px);
-          }
-          to { 
-            opacity: 1; 
-            transform: translateX(-50%) translateY(0) scale(1);
-            filter: blur(0px);
-          }
-        }
-        .shadow-3xl {
-          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+        @keyframes fadeInUp {
+          from { opacity:0; transform:translateX(-50%) translateY(14px) scale(0.97);}
+          to   { opacity:1; transform:translateX(-50%) translateY(0) scale(1);}
         }
       `}</style>
     </section>
