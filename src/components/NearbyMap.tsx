@@ -134,7 +134,7 @@ const NearbyMap: React.FC = () => {
           <div className={`mx-auto ${isMobile ? 'w-12 h-0.5' : 'w-16 md:w-24 h-1'} bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full animate-expand`}></div>
         </div>
 
-        <div className={`relative w-full ${isMobile ? 'h-[80vh]' : 'h-[60vh] md:h-[80vh] lg:h-[90vh]'} bg-transparent`}>
+        <div className={`relative w-full ${isMobile ? 'h-[75vh]' : 'h-[60vh] md:h-[80vh] lg:h-[90vh]'} bg-transparent`}>
           {/* SVG Path Layer with enhanced curved paths */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
@@ -149,14 +149,14 @@ const NearbyMap: React.FC = () => {
                 <stop offset="100%" stopColor="#5d4037" />
               </linearGradient>
               <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="1.5" result="glow" />
+                <feGaussianBlur stdDeviation="0.8" result="glow" />
                 <feMerge>
                   <feMergeNode in="glow" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
               <filter id="pathShadow" x="-50%" y="-50%" width="200%" height="200%">
-                <feDropShadow dx="1" dy="1" stdDeviation="1" floodColor="#000000" floodOpacity="0.3"/>
+                <feDropShadow dx="0.5" dy="0.5" stdDeviation="0.8" floodColor="#000000" floodOpacity="0.2"/>
               </filter>
             </defs>
             {destinationNodes.map((destination, idx) => (
@@ -164,46 +164,48 @@ const NearbyMap: React.FC = () => {
                 {/* Path shadow for depth */}
                 <path
                   d={generatePath(destination)}
-                  stroke="#00000015"
-                  strokeWidth={isMobile ? "1.2" : "1.5"}
+                  stroke="#00000010"
+                  strokeWidth={isMobile ? "0.8" : "1.0"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  transform="translate(0.5, 0.5)"
-                  opacity={animateIn ? 0.3 : 0}
+                  strokeDasharray={isMobile ? "0.3 0.7" : "0.4 0.8"}
+                  transform="translate(0.3, 0.3)"
+                  opacity={animateIn ? 0.2 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
                     transitionDelay: `${idx * 300 + 600}ms`
                   }}
                 />
-                {/* Main path */}
+                {/* Main dotted path */}
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.8" : "1.0"}
+                  strokeWidth={isMobile ? "0.5" : "0.6"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  opacity={hoveredPath === destination.id ? 0.95 : animateIn ? 0.8 : 0}
+                  strokeDasharray={isMobile ? "0.3 0.7" : "0.4 0.8"}
+                  opacity={hoveredPath === destination.id ? 0.95 : animateIn ? 0.75 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "2 3",
                     transitionDelay: `${idx * 300 + 800}ms`
                   }}
                   className="animate-draw-path"
                   onMouseEnter={() => setHoveredPath(destination.id)}
                   onMouseLeave={() => setHoveredPath(null)}
                 />
-                {/* Path highlights for realism */}
+                {/* Very fine highlight dots */}
                 <path
                   d={generatePath(destination)}
-                  stroke="#ffffff40"
-                  strokeWidth={isMobile ? "0.3" : "0.4"}
+                  stroke="#ffffff60"
+                  strokeWidth={isMobile ? "0.2" : "0.25"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  opacity={animateIn ? 0.6 : 0}
+                  strokeDasharray={isMobile ? "0.2 0.8" : "0.25 0.9"}
+                  opacity={animateIn ? 0.8 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
                     transitionDelay: `${idx * 300 + 1000}ms`
@@ -331,7 +333,7 @@ const NearbyMap: React.FC = () => {
             </div>
             <div className={`flex items-center gap-2 md:gap-3`}>
               <svg width={isMobile ? "16" : "28"} height={isMobile ? "6" : "10"} className="md:w-8 md:h-3">
-                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#fbbf24" strokeWidth="1.5" fill="none" strokeDasharray="1 1.5" className="animate-pulse" />
+                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#8b7355" strokeWidth="1" fill="none" strokeDasharray="0.3 0.7" className="animate-pulse" />
               </svg>
               <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Route</span>
             </div>
