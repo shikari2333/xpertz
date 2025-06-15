@@ -24,50 +24,54 @@ const NearbyMap: React.FC = () => {
   const nedumNode = activities.find(a => a.id === "nedum");
   const destinationNodes = activities.filter(a => a.id !== "nedum");
 
-  // === Optimized path generation with natural curves ===
+  // === Enhanced path generation with realistic curved roads ===
   const generatePath = (destination: any) => {
     if (!nedumNode || destination.id === "nedum") return "";
     const startX = 50;
     const startY = 60;
-    let endX, endY, cp1X, cp1Y, cp2X, cp2Y;
+    let pathString = "";
 
     switch (destination.id) {
       case "munnar":
-        endX = 15; endY = 15;
-        // Curve going up and left with natural arc
-        cp1X = 40; cp1Y = 45;
-        cp2X = 25; cp2Y = 25;
+        // Complex S-curve going up and left like a mountain road
+        pathString = `M ${startX} ${startY} 
+                     Q 45 50, 40 40 
+                     Q 35 30, 30 25 
+                     Q 25 20, 15 15`;
         break;
       case "thekkady":
-        endX = 85; endY = 85;
-        // Curve going down and right with smooth arc
-        cp1X = 60; cp1Y = 65;
-        cp2X = 75; cp2Y = 80;
+        // Winding path going down and right with multiple curves
+        pathString = `M ${startX} ${startY} 
+                     Q 60 65, 65 70 
+                     Q 70 75, 75 78 
+                     Q 80 82, 85 85`;
         break;
       case "ramakkalmedu":
-        endX = 85; endY = 45;
-        // Curve going right with slight upward arc
-        cp1X = 65; cp1Y = 55;
-        cp2X = 78; cp2Y = 48;
+        // Gentle arc going right with slight elevation changes
+        pathString = `M ${startX} ${startY} 
+                     Q 58 58, 65 55 
+                     Q 72 52, 78 48 
+                     Q 82 46, 85 45`;
         break;
       case "vagamon":
-        endX = 20; endY = 90;
-        // Curve going down and left with wide arc
-        cp1X = 38; cp1Y = 70;
-        cp2X = 25; cp2Y = 85;
+        // Curved descent going down and left
+        pathString = `M ${startX} ${startY} 
+                     Q 45 68, 38 75 
+                     Q 32 82, 28 86 
+                     Q 24 88, 20 90`;
         break;
       case "idukki-dam":
-        endX = 10; endY = 40;
-        // Curve going left with gentle arc
-        cp1X = 35; cp1Y = 52;
-        cp2X = 20; cp2Y = 44;
+        // Winding path going left with natural curves
+        pathString = `M ${startX} ${startY} 
+                     Q 42 58, 35 55 
+                     Q 28 52, 22 48 
+                     Q 16 44, 10 40`;
         break;
       default:
         return "";
     }
     
-    // Use cubic Bezier curve for smooth, natural paths
-    return `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+    return pathString;
   };
 
   const getNodePosition = (activityId: string) => {
@@ -131,7 +135,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className={`relative w-full ${isMobile ? 'h-[80vh]' : 'h-[60vh] md:h-[80vh] lg:h-[90vh]'} bg-transparent`}>
-          {/* SVG Path Layer with optimized curves */}
+          {/* SVG Path Layer with enhanced curved paths */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -140,35 +144,70 @@ const NearbyMap: React.FC = () => {
           >
             <defs>
               <linearGradient id="brownRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#886052" />
-                <stop offset="100%" stopColor="#5d3a1a" />
+                <stop offset="0%" stopColor="#8b7355" />
+                <stop offset="50%" stopColor="#6b5b47" />
+                <stop offset="100%" stopColor="#5d4037" />
               </linearGradient>
               <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="1.2" result="glow" />
+                <feGaussianBlur stdDeviation="1.5" result="glow" />
                 <feMerge>
                   <feMergeNode in="glow" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
+              <filter id="pathShadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="1" dy="1" stdDeviation="1" floodColor="#000000" floodOpacity="0.3"/>
+              </filter>
             </defs>
             {destinationNodes.map((destination, idx) => (
               <g key={destination.id}>
+                {/* Path shadow for depth */}
+                <path
+                  d={generatePath(destination)}
+                  stroke="#00000015"
+                  strokeWidth={isMobile ? "1.2" : "1.5"}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  transform="translate(0.5, 0.5)"
+                  opacity={animateIn ? 0.3 : 0}
+                  style={{
+                    transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
+                    transitionDelay: `${idx * 300 + 600}ms`
+                  }}
+                />
+                {/* Main path */}
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.6" : "0.8"}
+                  strokeWidth={isMobile ? "0.8" : "1.0"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 0.9 : animateIn ? 0.75 : 0}
+                  strokeLinejoin="round"
+                  opacity={hoveredPath === destination.id ? 0.95 : animateIn ? 0.8 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "1 1.5",
+                    strokeDasharray: "2 3",
                     transitionDelay: `${idx * 300 + 800}ms`
                   }}
                   className="animate-draw-path"
                   onMouseEnter={() => setHoveredPath(destination.id)}
                   onMouseLeave={() => setHoveredPath(null)}
+                />
+                {/* Path highlights for realism */}
+                <path
+                  d={generatePath(destination)}
+                  stroke="#ffffff40"
+                  strokeWidth={isMobile ? "0.3" : "0.4"}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity={animateIn ? 0.6 : 0}
+                  style={{
+                    transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
+                    transitionDelay: `${idx * 300 + 1000}ms`
+                  }}
                 />
               </g>
             ))}
