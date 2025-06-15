@@ -165,7 +165,7 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="#00000010"
-                  strokeWidth={isMobile ? "1.0" : "1.2"}
+                  strokeWidth={isMobile ? "1.2" : "1.4"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -181,7 +181,7 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.7" : "0.8"}
+                  strokeWidth={isMobile ? "0.9" : "1.0"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
@@ -200,7 +200,7 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="#ffffff60"
-                  strokeWidth={isMobile ? "0.3" : "0.35"}
+                  strokeWidth={isMobile ? "0.4" : "0.45"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -333,7 +333,7 @@ const NearbyMap: React.FC = () => {
             </div>
             <div className={`flex items-center gap-2 md:gap-3`}>
               <svg width={isMobile ? "16" : "28"} height={isMobile ? "6" : "10"} className="md:w-8 md:h-3">
-                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#8b7355" strokeWidth="1" fill="none" strokeDasharray="0.4 0.6" className="animate-pulse" />
+                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#8b7355" strokeWidth="1.2" fill="none" strokeDasharray="0.4 0.6" className="animate-pulse" />
               </svg>
               <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Route</span>
             </div>
