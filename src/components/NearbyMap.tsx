@@ -165,11 +165,11 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="#00000010"
-                  strokeWidth={isMobile ? "0.8" : "1.0"}
+                  strokeWidth={isMobile ? "1.0" : "1.2"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeDasharray={isMobile ? "0.3 0.7" : "0.4 0.8"}
+                  strokeDasharray={isMobile ? "0.4 0.6" : "0.5 0.7"}
                   transform="translate(0.3, 0.3)"
                   opacity={animateIn ? 0.2 : 0}
                   style={{
@@ -181,12 +181,12 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.5" : "0.6"}
+                  strokeWidth={isMobile ? "0.7" : "0.8"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeDasharray={isMobile ? "0.3 0.7" : "0.4 0.8"}
+                  strokeDasharray={isMobile ? "0.4 0.6" : "0.5 0.7"}
                   opacity={hoveredPath === destination.id ? 0.95 : animateIn ? 0.75 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
@@ -200,11 +200,11 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="#ffffff60"
-                  strokeWidth={isMobile ? "0.2" : "0.25"}
+                  strokeWidth={isMobile ? "0.3" : "0.35"}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeDasharray={isMobile ? "0.2 0.8" : "0.25 0.9"}
+                  strokeDasharray={isMobile ? "0.25 0.75" : "0.3 0.8"}
                   opacity={animateIn ? 0.8 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
@@ -333,7 +333,7 @@ const NearbyMap: React.FC = () => {
             </div>
             <div className={`flex items-center gap-2 md:gap-3`}>
               <svg width={isMobile ? "16" : "28"} height={isMobile ? "6" : "10"} className="md:w-8 md:h-3">
-                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#8b7355" strokeWidth="1" fill="none" strokeDasharray="0.3 0.7" className="animate-pulse" />
+                <path d={isMobile ? "M1 3 Q 4 1 8 3 Q 12 5 15 3" : "M1 5 Q 7 2 14 5 Q 21 8 27 5"} stroke="#8b7355" strokeWidth="1" fill="none" strokeDasharray="0.4 0.6" className="animate-pulse" />
               </svg>
               <span className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'} text-slate-700 font-medium`}>Route</span>
             </div>
