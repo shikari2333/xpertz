@@ -24,7 +24,7 @@ export const activities: Activity[] = [
     label: "Munnar",
     top: "150px",
     left: "250px",
-    icon: "/icons/tea.svg",
+    icon: "/svg/munnars.svg",
     highlights: ["Tea Plantations", "Eravikulam National Park", "Munnar Tea Museum"],
     distance: "90 km",
     time: "2 hr 30 min",

@@ -22,8 +22,7 @@ const NearbyMap: React.FC = () => {
 
   const nedumNode = activities.find(a => a.id === "nedum");
   const destinationNodes = activities.filter(a => a.id !== "nedum");
-
-  // Generate organic Bezier curve paths from Nedumkandam to each destination
+  // Generate natural road-like paths with multiple curve segments
   const generatePath = (destination: any) => {
     if (!nedumNode) return "";
     
@@ -31,41 +30,76 @@ const NearbyMap: React.FC = () => {
     const startX = 50; // Center position for Nedumkandam
     const startY = 60;
     
-    let endX, endY, cp1x, cp1y, cp2x, cp2y;
+    let pathSegments;
     
     switch (destination.id) {
       case "munnar":
-        endX = 25; endY = 20;
-        cp1x = 35; cp1y = 30;
-        cp2x = 30; cp2y = 25;
+        // Path to Munnar with winding mountain road effect
+        pathSegments = [
+          { x: 45, y: 45 },  // First curve through
+          { x: 40, y: 35 },  // Second bend
+          { x: 35, y: 30 },  // Mountain curve
+          { x: 25, y: 20 }   // Final destination
+        ];
         break;
       case "thekkady":
-        endX = 75; endY = 75;
-        cp1x = 65; cp1y = 65;
-        cp2x = 70; cp2y = 70;
+        // Path to Thekkady with forest route curves
+        pathSegments = [
+          { x: 55, y: 65 },
+          { x: 65, y: 68 },
+          { x: 70, y: 70 },
+          { x: 75, y: 75 }
+        ];
         break;
       case "ramakkalmedu":
-        endX = 70; endY = 50;
-        cp1x = 60; cp1y = 55;
-        cp2x = 65; cp2y = 52;
+        // Path to Ramakkalmedu with hillside curves
+        pathSegments = [
+          { x: 55, y: 58 },
+          { x: 60, y: 55 },
+          { x: 65, y: 52 },
+          { x: 70, y: 50 }
+        ];
         break;
       case "vagamon":
-        endX = 30; endY = 85;
-        cp1x = 40; cp1y = 70;
-        cp2x = 35; cp2y = 78;
+        // Path to Vagamon with valley curves
+        pathSegments = [
+          { x: 45, y: 65 },
+          { x: 40, y: 75 },
+          { x: 35, y: 80 },
+          { x: 30, y: 85 }
+        ];
         break;
       case "idukki-dam":
-        endX = 20; endY = 45;
-        cp1x = 35; cp1y = 50;
-        cp2x = 28; cp2y = 48;
+        // Path to Idukki Dam with reservoir curves
+        pathSegments = [
+          { x: 40, y: 55 },
+          { x: 35, y: 50 },
+          { x: 25, y: 48 },
+          { x: 20, y: 45 }
+        ];
         break;
       default:
-        endX = startX; endY = startY;
-        cp1x = startX; cp1y = startY;
-        cp2x = endX; cp2y = endY;
+        return "";
     }
+
+    // Create a natural path using multiple quadratic curves
+    let path = `M ${startX} ${startY}`;
+    pathSegments.forEach((point, index) => {
+      if (index === 0) {
+        // First curve from start point
+        const controlX = (startX + point.x) / 2;
+        const controlY = (startY + point.y) / 2;
+        path += ` Q ${controlX} ${controlY}, ${point.x} ${point.y}`;
+      } else {
+        // Subsequent curves between segments
+        const prevPoint = pathSegments[index - 1];
+        const controlX = (prevPoint.x + point.x) / 2;
+        const controlY = (prevPoint.y + point.y) / 2;
+        path += ` T ${point.x} ${point.y}`;
+      }
+    });
     
-    return `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
+    return path;
   };
 
   const getNodePosition = (activityId: string) => {
@@ -90,7 +124,7 @@ const NearbyMap: React.FC = () => {
   const getVisualImage = (activityId: string) => {
     switch (activityId) {
       case "munnar":
-        return "/lovable-uploads/46590a92-9269-46ee-9ed8-4bbe8ade68af.png";
+        return "svg/munnars.svg";
       default:
         return null;
     }
@@ -173,17 +207,9 @@ const NearbyMap: React.FC = () => {
     );
   }
 
-  return (
-    <section className="nearby-map relative w-full bg-[#F5F3F1] py-16 overflow-hidden">
-      <div className="container mx-auto max-w-7xl relative px-4">
-        <h2 className="text-5xl font-serif text-[#8B5E3C] text-center mb-3">
-          NEARBY EXPERIENCES
-        </h2>
-        <p className="text-center text-xl text-[#8B5E3C]/80 mb-12">
-          Explore destinations around Nedumkandam
-        </p>
-        
-        <div className="relative w-full h-[900px] bg-gradient-to-br from-[#F5F3F1] via-[#F0EDE8] to-[#E8E6E3] rounded-3xl shadow-xl overflow-hidden border border-[#E0DDD8]">
+  return (    <section className="nearby-map relative w-full bg-[#FFFFFF] overflow-hidden">
+      <div className="w-full relative">
+        <div className="relative w-full h-[100vh] bg-white">
           
           {/* Organic SVG Paths */}
           <svg
@@ -194,39 +220,63 @@ const NearbyMap: React.FC = () => {
           >
             <defs>
               <style>
-                {`
-                  .path-line {
+                {`                  .path-road {
                     stroke: #8B5E3C;
-                    stroke-width: 0.3;
-                    stroke-dasharray: 1 1;
+                    stroke-width: 0.6;
+                    fill: none;
+                    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05));
+                    animation: ${animateIn ? 'pathDraw 2.5s ease-out forwards' : 'none'};
+                  }
+
+                  .path-line-decoration {
+                    stroke: #FFFFFF;
+                    stroke-width: 0.15;
+                    stroke-dasharray: 0.6 1.2;
                     stroke-linecap: round;
                     fill: none;
-                    opacity: 0.8;
-                    animation: ${animateIn ? 'pathDraw 2s ease-out forwards, pathFlow 3s ease-in-out infinite' : 'none'};
+                    opacity: 0.5;
+                    animation: ${animateIn ? 'pathDraw 2.5s ease-out forwards, pathFlow 3s ease-in-out infinite' : 'none'};
                   }
                   
                   @keyframes pathDraw {
-                    from { stroke-dashoffset: 10; opacity: 0; }
-                    to { stroke-dashoffset: 0; opacity: 0.8; }
+                    from { 
+                      stroke-dashoffset: 100;
+                      opacity: 0;
+                    }
+                    to { 
+                      stroke-dashoffset: 0;
+                      opacity: 1;
+                    }
                   }
                   
                   @keyframes pathFlow {
                     0%, 100% { stroke-dashoffset: 0; }
-                    50% { stroke-dashoffset: 2; }
+                    50% { stroke-dashoffset: 4; }
                   }
                 `}
               </style>
             </defs>
             
-            {destinationNodes.map((destination, index) => (
-              <path
-                key={destination.id}
-                d={generatePath(destination)}
-                className="path-line"
-                style={{ 
-                  animationDelay: `${index * 300}ms`,
-                }}
-              />
+            {destinationNodes.map((destination, index) => (              <>
+                {/* Base road path */}
+                <path
+                  key={`${destination.id}-road`}
+                  d={generatePath(destination)}
+                  className="path-road"
+                  style={{ 
+                    animationDelay: `${index * 300}ms`,
+                  }}
+                />
+                {/* Road line decoration */}
+                <path
+                  key={`${destination.id}-decoration`}
+                  d={generatePath(destination)}
+                  className="path-line-decoration"
+                  style={{ 
+                    animationDelay: `${index * 300}ms`,
+                  }}
+                />
+              </>
             ))}
           </svg>
 
@@ -238,38 +288,7 @@ const NearbyMap: React.FC = () => {
             return (
               <div key={activity.id}>
                 {/* Visual Anchor Image */}
-                <div
-                  className={`absolute z-10 transition-all duration-700 ${
-                    animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                  }`}
-                  style={{
-                    top: `calc(${position.top} - 80px)`,
-                    left: `calc(${position.left} + 50px)`,
-                    transform: "translate(-50%, -50%)",
-                    transitionDelay: `${index * 200}ms`
-                  }}
-                >
-                  <div className="bg-white rounded-xl shadow-lg p-3 border border-[#E0DDD8]">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#F5F3F1] to-[#E8E6E3] rounded-lg mb-2 flex items-center justify-center overflow-hidden">
-                      {visualImage ? (
-                        <img
-                          src={visualImage}
-                          alt={activity.label}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src={activity.icon}
-                          alt={activity.label}
-                          className="w-8 h-8"
-                        />
-                      )}
-                    </div>
-                    <p className="text-xs font-serif text-[#8B5E3C] text-center font-medium">
-                      {activity.label}
-                    </p>
-                  </div>
-                </div>
+                {/* Removed Visual Anchor Image */}
 
                 {/* Interactive Node */}
                 <div
@@ -285,88 +304,55 @@ const NearbyMap: React.FC = () => {
                   onClick={() => handleNodeClick(activity.id)}
                   onMouseEnter={() => setActiveNode(activity.id)}
                   onMouseLeave={() => setActiveNode(null)}
-                >
-                  {/* Pulsing Rings */}
+                >                  {/* Modern Minimal Effect */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`anm-layer1 absolute rounded-full border-2 ${
-                      activity.id === "nedum" 
-                        ? "border-[#176F4A]/30 w-20 h-20" 
-                        : "border-[#8B5E3C]/30 w-16 h-16"
-                    }`} />
-                    <div className={`anm-layer2 absolute rounded-full border-2 ${
-                      activity.id === "nedum" 
-                        ? "border-[#176F4A]/20 w-24 h-24" 
-                        : "border-[#8B5E3C]/20 w-20 h-20"
-                    }`} />
+                    <div
+                      className={`modern-wave absolute ${
+                        activity.id === "nedum"
+                          ? "bg-[#176F4A]"
+                          : "bg-[#8B5E3C]"
+                      }`}
+                      style={{
+                        opacity: activeNode === activity.id ? 0.12 : 0
+                      }}
+                    />
                   </div>
 
                   {/* Main Node */}
                   <div
-                    className={`relative rounded-full shadow-lg transition-transform duration-200 ${
+                    className={`relative rounded-full shadow-lg transition-all duration-500 group hover:shadow-xl overflow-hidden ${
                       activity.id === "nedum"
-                        ? "w-16 h-16 bg-[#176F4A] border-4 border-white"
-                        : "w-12 h-12 bg-white border-3 border-[#8B5E3C]"
-                    } ${activeNode === activity.id ? 'scale-110' : 'scale-100'}`}
+                        ? "w-36 h-36 bg-[#176F4A]"
+                        : "w-32 h-32 bg-white"
+                    } ${activeNode === activity.id ? 'scale-105' : 'scale-100 hover:scale-102'}`}
                   >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <img
-                        src={activity.icon}
-                        alt={activity.label}
-                        className={`w-6 h-6 ${activity.id === "nedum" ? "filter invert" : ""}`}
-                      />
+                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full transition-transform duration-500 group-hover:scale-110">
+                      {visualImage ? (
+                        <img
+                          src={visualImage}
+                          alt={activity.label}
+                          className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+                        />
+                      ) : (
+                        <img
+                          src={activity.icon}
+                          alt={activity.label}
+                          className={`w-20 h-20 transition-all duration-300 group-hover:scale-110 ${activity.id === "nedum" ? "filter invert" : ""}`}
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-full"></div>
                     </div>
                     
                     {activity.id === "nedum" && (
-                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#8B5E3C] rounded-full border-2 border-white" />
+                      <div className="absolute -top-2 -right-2 w-10 h-10 bg-[#8B5E3C] rounded-full border-3 border-white flex items-center justify-center text-white text-base font-bold shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">!</div>
                     )}
                   </div>
 
-                  {/* Premium Tooltip */}
-                  {activeNode === activity.id && (
-                    <div className="absolute bottom-full mb-6 left-1/2 transform -translate-x-1/2 z-30 animate-fade-in">
-                      <div className="bg-white/95 backdrop-blur-sm border border-[#E0DDD8] shadow-2xl rounded-2xl px-6 py-4 w-72">
-                        <h3 className="font-serif text-xl text-[#8B5E3C] font-bold mb-2">
-                          {activity.label}
-                        </h3>
-                        
-                        {activity.distance && activity.time && (
-                          <p className="text-sm text-gray-600 mb-3">
-                            <span className="font-medium">Distance:</span> 
-                            <span className="text-[#176F4A] ml-1">{activity.distance}</span>
-                            <span className="mx-2">•</span>
-                            <span className="font-medium">Time:</span>
-                            <span className="text-[#176F4A] ml-1">{activity.time}</span>
-                          </p>
-                        )}
-                        
-                        <div className="mb-4">
-                          <h4 className="font-medium text-[#8B5E3C] mb-2">Highlights:</h4>
-                          <ul className="space-y-1 text-sm text-gray-700">
-                            {activity.highlights.slice(0, 3).map((highlight, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <span className="text-[#176F4A] mr-2">•</span>
-                                {highlight}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        
-                        {activity.id !== "nedum" && (
-                          <a
-                            href={`https://wa.me/919495107933?text=${encodeURIComponent(`Planning to visit ${activity.label}`)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block w-full py-3 rounded-xl bg-[#176F4A] hover:bg-[#14573a] text-white text-center font-medium transition-all duration-200 hover:shadow-lg"
-                          >
-                            Plan Visit
-                          </a>
-                        )}
-                        
-                        {/* Tooltip Arrow */}
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white" />
-                      </div>
-                    </div>
-                  )}
+                  {/* Label */}
+                  <p className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 text-sm font-serif text-[#8B5E3C] text-center font-medium whitespace-nowrap">
+                    {activity.label}
+                  </p>
+
                 </div>
               </div>
             );
@@ -395,26 +381,31 @@ const NearbyMap: React.FC = () => {
         </div>
       </div>
 
-      {/* Enhanced CSS Animations */}
-      <style>{`
-        .anm-layer1 {
-          animation: pulse-ring-1 2s infinite ease-out;
+      {/* Enhanced CSS Animations */}      <style>{`
+        .modern-wave {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          animation: modernWave 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+          transition: opacity 0.5s ease-in-out;
         }
         
-        .anm-layer2 {
-          animation: pulse-ring-2 2s infinite ease-out 0.5s;
+        @keyframes modernWave {
+          0% {
+            transform: scale(1);
+            opacity: 0.1;
+          }
+          50% {
+            opacity: 0.05;
+          }
+          100% {
+            transform: scale(1.5);
+            opacity: 0;
+          }
         }
-        
-        @keyframes pulse-ring-1 {
-          0% { transform: scale(0.8); opacity: 1; }
-          50% { transform: scale(1.1); opacity: 0.6; }
-          100% { transform: scale(1.3); opacity: 0; }
-        }
-        
-        @keyframes pulse-ring-2 {
-          0% { transform: scale(0.8); opacity: 1; }
-          50% { transform: scale(1.2); opacity: 0.4; }
-          100% { transform: scale(1.5); opacity: 0; }
+
+        .group:hover .modern-wave {
+          opacity: 0.08 !important;
         }
         
         .animate-fade-in {
