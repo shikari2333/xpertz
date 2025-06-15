@@ -1,7 +1,5 @@
-
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
-import { Waves } from "lucide-react";
 
 const NearbyMap: React.FC = () => {
   const [activeNode, setActiveNode] = useState<string | null>(null);
@@ -86,6 +84,11 @@ const NearbyMap: React.FC = () => {
     }
   };
 
+  const getVisualImage = (activityId: string) => {
+    const activity = activities.find(a => a.id === activityId);
+    return activity ? activity.icon : null;
+  };
+
   const handleNodeClick = (nodeId: string) => {
     if (activeNode === nodeId) {
       setActiveNode(null);
@@ -118,18 +121,17 @@ const NearbyMap: React.FC = () => {
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <div className="flex items-center mb-6">
-                  <div className="relative">
+                  <div className={`relative w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-500 ${
+                    activity.id === "nedum" 
+                      ? "bg-gradient-to-br from-emerald-500 to-emerald-600" 
+                      : "bg-gradient-to-br from-amber-500 to-orange-500"
+                  }`}>
                     <img
                       src={activity.icon}
                       alt={activity.label}
-                      className="w-20 h-20 object-cover shadow-lg transform group-hover:scale-110 transition-transform duration-500"
-                      style={{
-                        clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                      }}
+                      className={`${activity.id === "nedum" ? "w-full h-full object-cover" : "w-10 h-10 filter brightness-0 invert"}`}
                     />
-                    <div className="absolute -bottom-2 -right-2">
-                      <Waves className="w-6 h-6 text-emerald-500 opacity-70" />
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/20"></div>
                   </div>
                   <div className="ml-6">
                     <h3 className="text-2xl font-bold text-slate-800 mb-1">
@@ -146,13 +148,13 @@ const NearbyMap: React.FC = () => {
                 {activity.distance && activity.time && (
                   <div className="flex items-center gap-4 mb-6 p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-2xl">
                     <div className="flex items-center gap-2">
-                      <Waves className="w-4 h-4 text-emerald-500" />
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                       <span className="text-sm font-medium text-slate-600">
                         {activity.distance}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Waves className="w-4 h-4 text-amber-500" />
+                      <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
                       <span className="text-sm font-medium text-slate-600">
                         {activity.time}
                       </span>
@@ -165,7 +167,7 @@ const NearbyMap: React.FC = () => {
                   <div className="grid gap-3">
                     {activity.highlights.map((highlight, idx) => (
                       <div key={idx} className="flex items-center gap-3 p-3 bg-white/60 rounded-xl">
-                        <Waves className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                        <div className="w-2 h-2 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full flex-shrink-0"></div>
                         <span className="text-slate-700 font-medium">{highlight}</span>
                       </div>
                     ))}
@@ -192,17 +194,10 @@ const NearbyMap: React.FC = () => {
 
   return (
     <section className="nearby-map relative w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
-      {/* Enhanced background with wave patterns */}
+      {/* much subtler background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-28 left-12 w-48 h-48 bg-emerald-100/40 rounded-full blur-3xl"></div>
         <div className="absolute bottom-16 right-12 w-56 h-56 bg-amber-100/40 rounded-full blur-3xl"></div>
-        {/* Wave decorations */}
-        <div className="absolute top-20 right-1/4 opacity-20">
-          <Waves className="w-32 h-32 text-emerald-300 transform rotate-12" />
-        </div>
-        <div className="absolute bottom-32 left-1/4 opacity-20">
-          <Waves className="w-24 h-24 text-amber-300 transform -rotate-12" />
-        </div>
       </div>
 
       <div className="w-full relative">
@@ -217,7 +212,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* === Enhanced SVG paths with wave patterns === */}
+          {/* === Ultra-refined SVG Path Layer (tiny dots, long road effect) === */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -225,51 +220,57 @@ const NearbyMap: React.FC = () => {
             style={{ zIndex: 1 }}
           >
             <defs>
-              <linearGradient id="waveRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#10b981" />
-                <stop offset="50%" stopColor="#059669" />
-                <stop offset="100%" stopColor="#047857" />
+              <linearGradient id="brownRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#886052" />
+                <stop offset="100%" stopColor="#5d3a1a" />
               </linearGradient>
-              <filter id="pathGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <filter id="pathSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="1.2" result="glow" />
                 <feMerge>
                   <feMergeNode in="glow" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
-              <pattern id="wavePattern" x="0" y="0" width="4" height="2" patternUnits="userSpaceOnUse">
-                <path d="M0,1 Q1,0 2,1 T4,1" stroke="rgba(16,185,129,0.3)" strokeWidth="0.5" fill="none"/>
-              </pattern>
             </defs>
-            {destinationNodes.map((destination) => (
+            {destinationNodes.map((destination, idx) => (
               <g key={destination.id}>
+                {/* Main dotted road */}
                 <path
                   d={generatePath(destination)}
-                  stroke="url(#waveRouteGradient)"
-                  strokeWidth="1.5"
+                  stroke="url(#brownRouteGradient)"
+                  strokeWidth="0.8"
                   fill="none"
-                  filter="url(#pathGlow)"
+                  filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 1 : 0.8}
+                  opacity={hoveredPath === destination.id ? 0.9 : 0.6}
                   style={{
                     transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "1 2",
+                    strokeDasharray: "0.3 0.8", // Very small dots with small gaps
                   }}
                   onMouseEnter={() => setHoveredPath(destination.id)}
                   onMouseLeave={() => setHoveredPath(null)}
                 />
+                {/* Secondary parallel dotted line for road effect */}
                 <path
                   d={generatePath(destination)}
-                  stroke="url(#wavePattern)"
-                  strokeWidth="3"
+                  stroke="url(#brownRouteGradient)"
+                  strokeWidth="0.4"
                   fill="none"
-                  opacity="0.6"
+                  strokeLinecap="round"
+                  opacity={hoveredPath === destination.id ? 0.5 : 0.3}
+                  style={{
+                    transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
+                    strokeDasharray: "0.2 1.2", // Even smaller dots, longer gaps
+                    transform: "translate(0.5px, 0.5px)", // Slight offset for double line effect
+                  }}
+                  onMouseEnter={() => setHoveredPath(destination.id)}
+                  onMouseLeave={() => setHoveredPath(null)}
                 />
               </g>
             ))}
           </svg>
 
-          {/* --- Main Node (Nedumkandam) with wave design --- */}
+          {/* --- Main Node (Nedumkandam) --- */}
           {nedumNode && (
             <div
               className="absolute z-30"
@@ -280,35 +281,22 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode("nedum")}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="relative">
+                <div className="w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300">
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
-                    className="w-32 h-32 object-cover shadow-2xl transform group-hover:scale-110 transition-all duration-500"
-                    style={{
-                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)'
-                    }}
+                    className="w-28 h-28 rounded-full object-cover"
                   />
-                  <div className="absolute -top-2 -right-2 bg-emerald-500 p-2 rounded-full shadow-lg">
-                    <Waves className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent pointer-events-none"
-                       style={{
-                         clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)'
-                       }}></div>
                 </div>
-                <div className="mt-3 text-center">
+                <div className="mt-3">
                   <span className="block text-xl font-semibold text-emerald-700">{nedumNode.label}</span>
-                  <span className="text-xs text-emerald-500 font-medium flex items-center gap-1 justify-center">
-                    <Waves className="w-3 h-3" />
-                    Your Gateway
-                  </span>
+                  <span className="text-xs text-emerald-500 font-medium">Your Gateway</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* --- Destination Nodes with wave styling --- */}
+          {/* --- Destination Nodes (detailed, modern, but subtle) --- */}
           {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
             return (
@@ -325,55 +313,30 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="relative">
+                <div className={`w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300`}>
                   <img
                     src={activity.icon}
                     alt={activity.label}
-                    className="w-20 h-20 object-cover shadow-xl transform group-hover:scale-110 transition-all duration-300"
-                    style={{
-                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                    }}
+                    className="w-14 h-14 object-cover rounded-full"
                   />
-                  <div className="absolute -bottom-1 -right-1 bg-amber-500 p-1 rounded-full shadow-md">
-                    <Waves className="w-3 h-3 text-white" />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent pointer-events-none"
-                       style={{
-                         clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                       }}></div>
                 </div>
                 {/* Label */}
-                <div className="text-center mt-2">
+                <div className="text-center mt-1">
                   <span className="block font-medium text-slate-800">{activity.label}</span>
                   {activity.distance && (
-                    <span className="inline-flex items-center gap-1 text-xs mt-1 text-amber-600 rounded-md px-2 py-1 bg-amber-100/80">
-                      <Waves className="w-3 h-3" />
-                      {activity.distance}
-                    </span>
+                    <span className="inline-block text-xs mt-1 text-amber-500 rounded-md px-2 py-0.5 bg-amber-100/60">{activity.distance}</span>
                   )}
                 </div>
-                {/* --- Enhanced tooltip --- */}
+                {/* --- Minimal Card Tooltip, but with better detail --- */}
                 {activeNode === activity.id && (
-                  <div className="absolute left-1/2 top-full mt-3 -translate-x-1/2 z-50 w-56 bg-white/95 backdrop-blur-sm border border-emerald-200 rounded-2xl shadow-2xl p-5 animate-fade-in select-none">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Waves className="w-5 h-5 text-emerald-500" />
-                      <span className="font-semibold text-slate-900">{activity.label}</span>
-                    </div>
+                  <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50 w-52 bg-white border border-slate-200 rounded-xl shadow-xl p-4 animate-fade-in select-none">
+                    <div className="font-semibold text-slate-900 mb-2">{activity.label}</div>
                     {activity.highlights && (
-                      <div className="text-sm text-slate-700 mb-3">{activity.highlights[0]}</div>
+                      <div className="text-sm text-slate-700 mb-1">{activity.highlights[0]}</div>
                     )}
-                    <div className="flex items-center justify-between text-xs text-slate-500">
-                      {activity.distance && (
-                        <span className="flex items-center gap-1">
-                          <Waves className="w-3 h-3" />
-                          {activity.distance}
-                        </span>
-                      )}
-                      {activity.time && (
-                        <span className="flex items-center gap-1">
-                          ⏱ {activity.time}
-                        </span>
-                      )}
+                    <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
+                      {activity.distance && <span>📏 {activity.distance}</span>}
+                      {activity.time && <span>⏱ {activity.time}</span>}
                     </div>
                   </div>
                 )}
@@ -381,45 +344,30 @@ const NearbyMap: React.FC = () => {
             );
           })}
 
-          {/* --- Enhanced Legend with wave theme --- */}
-          <div className="absolute top-10 right-8 bg-white/95 backdrop-blur-sm rounded-2xl border border-slate-200 px-6 py-5 shadow-xl z-30">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="relative w-6 h-6">
-                <div className="w-full h-full bg-emerald-400" style={{
-                  clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)'
-                }}></div>
-                <Waves className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white" />
-              </div>
+          {/* --- Modern Legend (simpler, clear) --- */}
+          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-5 h-5 rounded-full bg-emerald-400"></div>
               <span className="text-sm text-slate-700 font-medium">Your Location</span>
             </div>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="relative w-6 h-6">
-                <div className="w-full h-full bg-amber-400" style={{
-                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                }}></div>
-                <Waves className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 text-white" />
-              </div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-5 h-5 rounded-full bg-white border border-amber-200"></div>
               <span className="text-sm text-slate-700 font-medium">Destinations</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex items-center">
-                <svg width="32" height="12">
-                  <path d="M2 6 Q 16 2 30 6" stroke="#10b981" strokeWidth="2" fill="none" strokeDasharray="1 2" />
-                </svg>
-                <Waves className="w-4 h-4 text-emerald-500 ml-1" />
-              </div>
-              <span className="text-sm text-slate-700 font-medium">Wave Routes</span>
+              <svg width="32" height="12"><path d="M1 6 Q 12 1 31 6" stroke="#fbbf24" strokeWidth="2" fill="none" /></svg>
+              <span className="text-sm text-slate-700 font-medium">Scenic Route</span>
             </div>
           </div>
         </div>
       </div>
-      {/* --- Enhanced animations --- */}
+      {/* --- Minimal animation overrides --- */}
       <style>{`
         .animate-fade-in {
-          animation: fadeInUp 0.4s cubic-bezier(.4,2,.1,.9) both;
+          animation: fadeInUp 0.3s cubic-bezier(.4,2,.1,.9) both;
         }
         @keyframes fadeInUp {
-          from { opacity:0; transform:translateX(-50%) translateY(20px) scale(0.95);}
+          from { opacity:0; transform:translateX(-50%) translateY(14px) scale(0.97);}
           to   { opacity:1; transform:translateX(-50%) translateY(0) scale(1);}
         }
       `}</style>
