@@ -24,48 +24,50 @@ const NearbyMap: React.FC = () => {
   const nedumNode = activities.find(a => a.id === "nedum");
   const destinationNodes = activities.filter(a => a.id !== "nedum");
 
-  // === Enhanced path generation with longer, more dramatic curves ===
+  // === Optimized path generation with natural curves ===
   const generatePath = (destination: any) => {
     if (!nedumNode || destination.id === "nedum") return "";
     const startX = 50;
     const startY = 60;
-    let end, curve1, curve2, curve3;
+    let endX, endY, cp1X, cp1Y, cp2X, cp2Y;
 
     switch (destination.id) {
       case "munnar":
-        end = { x: 15, y: 15 };
-        curve1 = { x: 45, y: 45 };
-        curve2 = { x: 25, y: 25 };
-        curve3 = { x: 18, y: 18 };
+        endX = 15; endY = 15;
+        // Curve going up and left with natural arc
+        cp1X = 40; cp1Y = 45;
+        cp2X = 25; cp2Y = 25;
         break;
       case "thekkady":
-        end = { x: 85, y: 85 };
-        curve1 = { x: 65, y: 70 };
-        curve2 = { x: 78, y: 65 };
-        curve3 = { x: 82, y: 80 };
+        endX = 85; endY = 85;
+        // Curve going down and right with smooth arc
+        cp1X = 60; cp1Y = 65;
+        cp2X = 75; cp2Y = 80;
         break;
       case "ramakkalmedu":
-        end = { x: 85, y: 45 };
-        curve1 = { x: 60, y: 58 };
-        curve2 = { x: 75, y: 52 };
-        curve3 = { x: 82, y: 48 };
+        endX = 85; endY = 45;
+        // Curve going right with slight upward arc
+        cp1X = 65; cp1Y = 55;
+        cp2X = 78; cp2Y = 48;
         break;
       case "vagamon":
-        end = { x: 20, y: 90 };
-        curve1 = { x: 42, y: 75 };
-        curve2 = { x: 28, y: 82 };
-        curve3 = { x: 22, y: 88 };
+        endX = 20; endY = 90;
+        // Curve going down and left with wide arc
+        cp1X = 38; cp1Y = 70;
+        cp2X = 25; cp2Y = 85;
         break;
       case "idukki-dam":
-        end = { x: 10, y: 40 };
-        curve1 = { x: 35, y: 55 };
-        curve2 = { x: 18, y: 48 };
-        curve3 = { x: 12, y: 42 };
+        endX = 10; endY = 40;
+        // Curve going left with gentle arc
+        cp1X = 35; cp1Y = 52;
+        cp2X = 20; cp2Y = 44;
         break;
       default:
         return "";
     }
-    return `M ${startX} ${startY} C ${curve1.x} ${curve1.y}, ${curve2.x} ${curve2.y}, ${curve3.x} ${curve3.y} S ${end.x + 2} ${end.y + 1}, ${end.x} ${end.y}`;
+    
+    // Use cubic Bezier curve for smooth, natural paths
+    return `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
   };
 
   const getNodePosition = (activityId: string) => {
@@ -128,8 +130,8 @@ const NearbyMap: React.FC = () => {
           <div className={`mx-auto ${isMobile ? 'w-12 h-0.5' : 'w-16 md:w-24 h-1'} bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full animate-expand`}></div>
         </div>
 
-        <div className={`relative w-full ${isMobile ? 'h-[75vh]' : 'h-[60vh] md:h-[80vh] lg:h-[90vh]'} bg-transparent`}>
-          {/* SVG Path Layer with enhanced animations */}
+        <div className={`relative w-full ${isMobile ? 'h-[80vh]' : 'h-[60vh] md:h-[80vh] lg:h-[90vh]'} bg-transparent`}>
+          {/* SVG Path Layer with optimized curves */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -154,14 +156,14 @@ const NearbyMap: React.FC = () => {
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth={isMobile ? "0.4" : "0.5"}
+                  strokeWidth={isMobile ? "0.6" : "0.8"}
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 0.9 : animateIn ? 0.7 : 0}
+                  opacity={hoveredPath === destination.id ? 0.9 : animateIn ? 0.75 : 0}
                   style={{
                     transition: "all 0.6s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "0.5 0.75",
+                    strokeDasharray: "1 1.5",
                     transitionDelay: `${idx * 300 + 800}ms`
                   }}
                   className="animate-draw-path"
