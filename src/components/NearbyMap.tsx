@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { activities } from "../data/activities";
 
@@ -24,10 +25,9 @@ const NearbyMap: React.FC = () => {
   const nedumNode = activities.find(a => a.id === "nedum");
   const destinationNodes = activities.filter(a => a.id !== "nedum");
 
-  // === Enhanced path generation with more realistic curves ===
+  // === Enhanced path generation with wave-like curves ===
   const generatePath = (destination: any) => {
     if (!nedumNode || destination.id === "nedum") return "";
-    // Re-center curves for more 'organic' and realistic feel
     const startX = 50;
     const startY = 60;
     let end, curve1, curve2;
@@ -61,7 +61,6 @@ const NearbyMap: React.FC = () => {
       default:
         return "";
     }
-    // Cubic Bezier for smooth, realistic path
     return `M ${startX} ${startY} C ${curve1.x} ${curve1.y}, ${curve2.x} ${curve2.y}, ${end.x} ${end.y}`;
   };
 
@@ -82,11 +81,6 @@ const NearbyMap: React.FC = () => {
       default:
         return { top: "50%", left: "50%" };
     }
-  };
-
-  const getVisualImage = (activityId: string) => {
-    const activity = activities.find(a => a.id === activityId);
-    return activity ? activity.icon : null;
   };
 
   const handleNodeClick = (nodeId: string) => {
@@ -121,15 +115,18 @@ const NearbyMap: React.FC = () => {
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <div className="flex items-center mb-6">
-                  <div className={`relative w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-500 ${
+                  <div className={`relative w-20 h-20 flex items-center justify-center overflow-hidden shadow-lg group-hover:scale-110 transition-transform duration-500 ${
                     activity.id === "nedum" 
                       ? "bg-gradient-to-br from-emerald-500 to-emerald-600" 
                       : "bg-gradient-to-br from-amber-500 to-orange-500"
-                  }`}>
+                  }`}
+                  style={{
+                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
+                  }}>
                     <img
                       src={activity.icon}
                       alt={activity.label}
-                      className={`${activity.id === "nedum" ? "w-full h-full object-cover" : "w-10 h-10 filter brightness-0 invert"}`}
+                      className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/20"></div>
                   </div>
@@ -194,10 +191,22 @@ const NearbyMap: React.FC = () => {
 
   return (
     <section className="nearby-map relative w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
-      {/* much subtler background */}
+      {/* Wave background patterns */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-28 left-12 w-48 h-48 bg-emerald-100/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-16 right-12 w-56 h-56 bg-amber-100/40 rounded-full blur-3xl"></div>
+        <svg className="absolute top-0 left-0 w-full h-full opacity-20" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <path d="M0,200 Q250,150 500,200 T1000,200 L1000,0 L0,0 Z" fill="url(#waveGradient1)" />
+          <path d="M0,600 Q250,550 500,600 T1000,600 L1000,400 Q750,450 500,400 T0,400 Z" fill="url(#waveGradient2)" />
+          <defs>
+            <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ecfdf5" />
+              <stop offset="100%" stopColor="#fef3e2" />
+            </linearGradient>
+            <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#f0fdf4" />
+              <stop offset="100%" stopColor="#fefce8" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
 
       <div className="w-full relative">
@@ -212,7 +221,7 @@ const NearbyMap: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-transparent">
-          {/* === Ultra-refined SVG Path Layer (tiny dots, long road effect) === */}
+          {/* SVG Path Layer with wave patterns */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 100 100"
@@ -234,34 +243,17 @@ const NearbyMap: React.FC = () => {
             </defs>
             {destinationNodes.map((destination, idx) => (
               <g key={destination.id}>
-                {/* Main dotted road */}
                 <path
                   d={generatePath(destination)}
                   stroke="url(#brownRouteGradient)"
-                  strokeWidth="0.8"
+                  strokeWidth="0.5"
                   fill="none"
                   filter="url(#pathSoftGlow)"
                   strokeLinecap="round"
                   opacity={hoveredPath === destination.id ? 0.9 : 0.6}
                   style={{
                     transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "0.3 0.8", // Very small dots with small gaps
-                  }}
-                  onMouseEnter={() => setHoveredPath(destination.id)}
-                  onMouseLeave={() => setHoveredPath(null)}
-                />
-                {/* Secondary parallel dotted line for road effect */}
-                <path
-                  d={generatePath(destination)}
-                  stroke="url(#brownRouteGradient)"
-                  strokeWidth="0.4"
-                  fill="none"
-                  strokeLinecap="round"
-                  opacity={hoveredPath === destination.id ? 0.5 : 0.3}
-                  style={{
-                    transition: "opacity 0.3s cubic-bezier(.6,.2,.4,1)",
-                    strokeDasharray: "0.2 1.2", // Even smaller dots, longer gaps
-                    transform: "translate(0.5px, 0.5px)", // Slight offset for double line effect
+                    strokeDasharray: "0.5 0.75",
                   }}
                   onMouseEnter={() => setHoveredPath(destination.id)}
                   onMouseLeave={() => setHoveredPath(null)}
@@ -270,7 +262,7 @@ const NearbyMap: React.FC = () => {
             ))}
           </svg>
 
-          {/* --- Main Node (Nedumkandam) --- */}
+          {/* Main Node (Nedumkandam) */}
           {nedumNode && (
             <div
               className="absolute z-30"
@@ -281,11 +273,14 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode("nedum")}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className="w-36 h-36 rounded-full shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300">
+                <div className="w-36 h-36 shadow-xl bg-white border border-emerald-200 flex items-center justify-center transition-all duration-300 overflow-hidden"
+                style={{
+                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
+                }}>
                   <img
                     src={nedumNode.icon}
                     alt={nedumNode.label}
-                    className="w-28 h-28 rounded-full object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="mt-3">
@@ -296,7 +291,7 @@ const NearbyMap: React.FC = () => {
             </div>
           )}
 
-          {/* --- Destination Nodes (detailed, modern, but subtle) --- */}
+          {/* Destination Nodes */}
           {destinationNodes.map((activity, idx) => {
             const position = getNodePosition(activity.id);
             return (
@@ -313,21 +308,22 @@ const NearbyMap: React.FC = () => {
                 onMouseEnter={() => setActiveNode(activity.id)}
                 onMouseLeave={() => setActiveNode(null)}
               >
-                <div className={`w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300`}>
+                <div className="w-24 h-24 flex items-center justify-center shadow-md bg-white border border-amber-100 hover:shadow-lg transition-all duration-300 overflow-hidden"
+                style={{
+                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
+                }}>
                   <img
                     src={activity.icon}
                     alt={activity.label}
-                    className="w-14 h-14 object-cover rounded-full"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                {/* Label */}
                 <div className="text-center mt-1">
                   <span className="block font-medium text-slate-800">{activity.label}</span>
                   {activity.distance && (
                     <span className="inline-block text-xs mt-1 text-amber-500 rounded-md px-2 py-0.5 bg-amber-100/60">{activity.distance}</span>
                   )}
                 </div>
-                {/* --- Minimal Card Tooltip, but with better detail --- */}
                 {activeNode === activity.id && (
                   <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50 w-52 bg-white border border-slate-200 rounded-xl shadow-xl p-4 animate-fade-in select-none">
                     <div className="font-semibold text-slate-900 mb-2">{activity.label}</div>
@@ -344,24 +340,27 @@ const NearbyMap: React.FC = () => {
             );
           })}
 
-          {/* --- Modern Legend (simpler, clear) --- */}
-          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30">
+          {/* Legend with wave styling */}
+          <div className="absolute top-10 right-8 bg-white/95 rounded-xl border border-slate-100 px-6 py-4 shadow-lg z-30"
+          style={{
+            clipPath: 'polygon(0% 10%, 10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%)'
+          }}>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-5 h-5 rounded-full bg-emerald-400"></div>
+              <div className="w-5 h-5 bg-emerald-400" style={{clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'}}></div>
               <span className="text-sm text-slate-700 font-medium">Your Location</span>
             </div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-5 h-5 rounded-full bg-white border border-amber-200"></div>
+              <div className="w-5 h-5 bg-white border border-amber-200" style={{clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'}}></div>
               <span className="text-sm text-slate-700 font-medium">Destinations</span>
             </div>
             <div className="flex items-center gap-3">
-              <svg width="32" height="12"><path d="M1 6 Q 12 1 31 6" stroke="#fbbf24" strokeWidth="2" fill="none" /></svg>
+              <svg width="32" height="12"><path d="M1 6 Q 12 1 31 6" stroke="#fbbf24" strokeWidth="2" fill="none" strokeDasharray="1 1.5" /></svg>
               <span className="text-sm text-slate-700 font-medium">Scenic Route</span>
             </div>
           </div>
         </div>
       </div>
-      {/* --- Minimal animation overrides --- */}
+
       <style>{`
         .animate-fade-in {
           animation: fadeInUp 0.3s cubic-bezier(.4,2,.1,.9) both;
