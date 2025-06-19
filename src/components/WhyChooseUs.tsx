@@ -47,7 +47,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section id="why-choose" className="py-20 relative overflow-hidden">
+    <section id="why-choose" className="py-20 relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:bg-transparent">
       <div className="absolute inset-0">
         <motion.div
           className="absolute top-1/4 left-0 w-72 h-72 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl"
@@ -83,13 +83,13 @@ const WhyChooseUs = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
             Why Choose{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-700 dark:from-cyan-400 dark:to-blue-500">
               Xpertz?
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto">
             Discover what makes us the preferred choice for businesses in Kattappana and beyond
           </p>
         </motion.div>
@@ -104,9 +104,9 @@ const WhyChooseUs = () => {
               transition={{ duration: 0.8, delay: index * 0.1 }}
               whileHover={{ scale: 1.05 }}
             >
-              <div className="h-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-2xl border border-slate-700 group-hover:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm">
+              <div className="h-full bg-white/90 dark:bg-gradient-to-br dark:from-slate-800/50 dark:to-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 group-hover:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl">
                 <motion.div
-                  className={`w-16 h-16 rounded-xl bg-gradient-to-r ${benefit.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                  className={`w-16 h-16 rounded-xl bg-gradient-to-r ${benefit.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}
                   whileHover={{
                     boxShadow: '0 0 30px rgba(6, 182, 212, 0.4)',
                   }}
@@ -114,11 +114,11 @@ const WhyChooseUs = () => {
                   <benefit.icon className="text-white" size={32} />
                 </motion.div>
 
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-300">
                   {benefit.title}
                 </h3>
 
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-slate-600 dark:text-gray-300 leading-relaxed">
                   {benefit.description}
                 </p>
 
@@ -140,9 +140,9 @@ const WhyChooseUs = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <div className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-slate-700 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">Ready to Get Started?</h3>
-            <p className="text-lg text-gray-300 mb-6">
+          <div className="bg-white/90 dark:bg-gradient-to-r dark:from-slate-800/50 dark:to-slate-900/50 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 max-w-4xl mx-auto shadow-lg backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Ready to Get Started?</h3>
+            <p className="text-lg text-slate-700 dark:text-gray-300 mb-6">
               Join hundreds of satisfied clients who trust Xpertz for their business needs
             </p>
             <motion.button
