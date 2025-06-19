@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -127,21 +126,21 @@ const Contact = () => {
               ))}
             </div>
 
-            {/* Office Image */}
+            {/* Professional Business Consultation Image */}
             <motion.div
               className="mt-8 relative overflow-hidden rounded-2xl shadow-xl"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
               <img 
-                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=300&fit=crop&crop=center" 
-                alt="Contact Us - Office Environment" 
+                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=600&h=300&fit=crop&crop=center" 
+                alt="Professional Business Consultation" 
                 className="w-full h-48 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               <div className="absolute bottom-4 left-4 text-white">
-                <h4 className="font-bold text-lg">Visit Our Office</h4>
-                <p className="text-sm opacity-90">Professional consultation environment</p>
+                <h4 className="font-bold text-lg">Expert Consultation</h4>
+                <p className="text-sm opacity-90">Professional guidance for your business</p>
               </div>
             </motion.div>
 

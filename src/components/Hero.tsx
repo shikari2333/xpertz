@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Shield, Clock } from 'lucide-react';
@@ -167,17 +166,17 @@ const Hero = () => {
               animate={floatingAnimation}
             >
               <div className="bg-white/90 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 bg-gradient-to-br from-slate-50 to-slate-100 p-8 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 backdrop-blur-sm">
-                {/* Business Success Image */}
+                {/* Professional Business Consultation Image */}
                 <div className="mb-6 relative overflow-hidden rounded-2xl">
                   <img 
-                    src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&h=300&fit=crop&crop=center" 
-                    alt="Business Success" 
+                    src="https://images.unsplash.com/photo-1560472354-b33ff0c44a7?w=500&h=300&fit=crop&crop=center" 
+                    alt="Professional Business Consultation" 
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 text-white">
-                    <h3 className="font-bold text-lg">Your Success Story</h3>
-                    <p className="text-sm opacity-90">Starts Here</p>
+                    <h3 className="font-bold text-lg">Professional Service</h3>
+                    <p className="text-sm opacity-90">Expert Business Solutions</p>
                   </div>
                 </div>
 

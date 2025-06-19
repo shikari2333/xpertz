@@ -17,7 +17,7 @@ const Services = () => {
       color: 'from-cyan-500 to-blue-500',
       bgColor: 'from-cyan-50 to-blue-50',
       darkBgColor: 'from-cyan-500/10 to-blue-500/10',
-      image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=200&fit=crop&crop=center',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=200&fit=crop&crop=center',
       delay: 0.1
     },
     {
@@ -28,7 +28,7 @@ const Services = () => {
       color: 'from-green-500 to-emerald-500',
       bgColor: 'from-green-50 to-emerald-50',
       darkBgColor: 'from-green-500/10 to-emerald-500/10',
-      image: 'https://images.unsplash.com/photo-1554224154-26032fced8bd?w=400&h=200&fit=crop&crop=center',
+      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=200&fit=crop&crop=center',
       delay: 0.2
     },
     {
@@ -39,7 +39,7 @@ const Services = () => {
       color: 'from-purple-500 to-pink-500',
       bgColor: 'from-purple-50 to-pink-50',
       darkBgColor: 'from-purple-500/10 to-pink-500/10',
-      image: 'https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=400&h=200&fit=crop&crop=center',
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop&crop=center',
       delay: 0.3
     },
     {
@@ -50,7 +50,7 @@ const Services = () => {
       color: 'from-orange-500 to-red-500',
       bgColor: 'from-orange-50 to-red-50',
       darkBgColor: 'from-orange-500/10 to-red-500/10',
-      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=200&fit=crop&crop=center',
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=200&fit=crop&crop=center',
       delay: 0.4
     }
   ];

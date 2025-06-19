@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -58,21 +57,21 @@ const About = () => {
               achieve their business goals.
             </p>
 
-            {/* Office Image */}
+            {/* Professional Office Environment Image */}
             <motion.div
               className="mb-8 relative overflow-hidden rounded-2xl shadow-xl"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
               <img 
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=300&fit=crop&crop=center" 
-                alt="Modern Office" 
+                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a7?w=600&h=300&fit=crop&crop=center" 
+                alt="Professional Office Environment" 
                 className="w-full h-64 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               <div className="absolute bottom-4 left-4 text-white">
-                <h3 className="font-bold text-lg">Professional Environment</h3>
-                <p className="text-sm opacity-90">Where Excellence Meets Innovation</p>
+                <h3 className="font-bold text-lg">Modern Workspace</h3>
+                <p className="text-sm opacity-90">Where Innovation Meets Expertise</p>
               </div>
             </motion.div>
 
