@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -44,7 +43,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 relative overflow-hidden">
+    <section id="services" className="py-20 relative overflow-hidden bg-white dark:bg-transparent">
       <div className="absolute inset-0">
         <motion.div
           className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl"
@@ -68,13 +67,13 @@ const Services = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
             Our{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
               Services
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-gray-300 max-w-3xl mx-auto">
             Comprehensive business solutions tailored for your success in Kattappana and beyond
           </p>
         </motion.div>
@@ -89,7 +88,7 @@ const Services = () => {
               whileHover={{ scale: 1.05 }}
               className="group"
             >
-              <Card className="h-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-slate-700 hover:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm">
+              <Card className="h-full bg-white dark:bg-gradient-to-br dark:from-slate-800/50 dark:to-slate-900/50 border-slate-200 dark:border-slate-700 hover:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm shadow-lg">
                 <div className="p-6">
                   <motion.div
                     className={`w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
@@ -100,11 +99,11 @@ const Services = () => {
                     <service.icon className="text-white" size={32} />
                   </motion.div>
 
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-300">
                     {service.title}
                   </h3>
 
-                  <p className="text-gray-300 mb-6 leading-relaxed">
+                  <p className="text-slate-600 dark:text-gray-300 mb-6 leading-relaxed">
                     {service.description}
                   </p>
 
@@ -112,7 +111,7 @@ const Services = () => {
                     {service.features.map((feature, featureIndex) => (
                       <motion.li
                         key={feature}
-                        className="text-sm text-gray-400 flex items-center"
+                        className="text-sm text-slate-500 dark:text-gray-400 flex items-center"
                         initial={{ opacity: 0, x: -20 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.5, delay: service.delay + (featureIndex * 0.1) }}
@@ -124,10 +123,10 @@ const Services = () => {
                   </ul>
 
                   <motion.div
-                    className="mt-6 pt-6 border-t border-slate-700"
+                    className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700"
                     whileHover={{ scale: 1.02 }}
                   >
-                    <button className="w-full bg-gradient-to-r from-slate-700 to-slate-800 hover:from-cyan-500/20 hover:to-blue-500/20 text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:border-cyan-500/50 border border-transparent">
+                    <button className="w-full bg-slate-100 dark:bg-gradient-to-r dark:from-slate-700 dark:to-slate-800 hover:bg-slate-200 dark:hover:from-cyan-500/20 dark:hover:to-blue-500/20 text-slate-700 dark:text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:border-cyan-500/50 border border-transparent">
                       Learn More
                     </button>
                   </motion.div>

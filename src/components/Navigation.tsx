@@ -29,7 +29,9 @@ const Navigation = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-slate-900/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        scrolled 
+          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg border-b border-slate-200/50 dark:border-slate-700/50' 
+          : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +43,7 @@ const Navigation = () => {
             <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">X</span>
             </div>
-            <span className="text-white font-bold text-xl">Xpertz</span>
+            <span className="text-slate-900 dark:text-white font-bold text-xl">Xpertz</span>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -50,7 +52,7 @@ const Navigation = () => {
               <motion.a
                 key={item.label}
                 href={item.href}
-                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200 relative"
+                className="text-slate-700 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200 relative"
                 whileHover={{ scale: 1.05 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -58,7 +60,7 @@ const Navigation = () => {
               >
                 {item.label}
                 <motion.div
-                  className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-400"
+                  className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-500"
                   whileHover={{ width: '100%' }}
                   transition={{ duration: 0.3 }}
                 />
@@ -79,7 +81,7 @@ const Navigation = () => {
           <div className="md:hidden">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-white"
+              className="text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white"
               whileTap={{ scale: 0.95 }}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -95,12 +97,12 @@ const Navigation = () => {
         animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? 'auto' : 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900/95 backdrop-blur-md">
+        <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/50">
           {navItems.map((item, index) => (
             <motion.a
               key={item.label}
               href={item.href}
-              className="text-gray-300 hover:text-cyan-400 block px-3 py-2 rounded-md text-base font-medium"
+              className="text-slate-700 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 block px-3 py-2 rounded-md text-base font-medium"
               onClick={() => setIsOpen(false)}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}

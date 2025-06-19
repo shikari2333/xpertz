@@ -10,7 +10,7 @@ const Hero = () => {
     transition: {
       duration: 4,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: "easeInOut" as const
     }
   };
 
@@ -54,20 +54,20 @@ const Hero = () => {
               transition={{ duration: 0.8 }}
               className="mb-6"
             >
-              <span className="inline-block px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full text-cyan-400 text-sm font-medium border border-cyan-500/30">
+              <span className="inline-block px-4 py-2 bg-cyan-500/20 dark:bg-cyan-500/20 rounded-full text-cyan-600 dark:text-cyan-400 text-sm font-medium border border-cyan-500/30">
                 🚀 Your Business Success Partner
               </span>
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               Empowering Your{' '}
               <motion.span
-                className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600"
                 animate={{
                   backgroundPosition: ['0%', '100%', '0%'],
                 }}
@@ -84,7 +84,7 @@ const Hero = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl text-gray-300 mb-8 max-w-2xl"
+              className="text-xl text-slate-600 dark:text-gray-300 mb-8 max-w-2xl"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -114,7 +114,7 @@ const Hero = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
+                className="border-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
               >
                 View Services
               </Button>
@@ -132,30 +132,30 @@ const Hero = () => {
                   className="flex items-center justify-center mb-2"
                   whileHover={{ scale: 1.1 }}
                 >
-                  <Star className="text-yellow-400 mr-1" size={20} />
-                  <span className="text-white font-bold">4.8</span>
+                  <Star className="text-yellow-500 mr-1" size={20} />
+                  <span className="text-slate-900 dark:text-white font-bold">4.8</span>
                 </motion.div>
-                <p className="text-gray-400 text-sm">Client Rating</p>
+                <p className="text-slate-600 dark:text-gray-400 text-sm">Client Rating</p>
               </div>
               <div className="text-center">
                 <motion.div
                   className="flex items-center justify-center mb-2"
                   whileHover={{ scale: 1.1 }}
                 >
-                  <Shield className="text-green-400 mr-1" size={20} />
-                  <span className="text-white font-bold">100%</span>
+                  <Shield className="text-green-500 mr-1" size={20} />
+                  <span className="text-slate-900 dark:text-white font-bold">100%</span>
                 </motion.div>
-                <p className="text-gray-400 text-sm">Secure</p>
+                <p className="text-slate-600 dark:text-gray-400 text-sm">Secure</p>
               </div>
               <div className="text-center">
                 <motion.div
                   className="flex items-center justify-center mb-2"
                   whileHover={{ scale: 1.1 }}
                 >
-                  <Clock className="text-blue-400 mr-1" size={20} />
-                  <span className="text-white font-bold">24h</span>
+                  <Clock className="text-blue-500 mr-1" size={20} />
+                  <span className="text-slate-900 dark:text-white font-bold">24h</span>
                 </motion.div>
-                <p className="text-gray-400 text-sm">Fast Service</p>
+                <p className="text-slate-600 dark:text-gray-400 text-sm">Fast Service</p>
               </div>
             </motion.div>
           </div>
@@ -166,35 +166,35 @@ const Hero = () => {
               className="relative z-10"
               animate={floatingAnimation}
             >
-              <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-3xl shadow-2xl border border-slate-700">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 bg-gradient-to-br from-slate-50 to-slate-100 p-8 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700">
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <motion.div
                     className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 p-4 rounded-xl border border-cyan-500/30"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <h3 className="text-cyan-400 font-semibold mb-2">PAN Card</h3>
-                    <p className="text-gray-300 text-sm">Quick & Easy Registration</p>
+                    <h3 className="text-cyan-600 dark:text-cyan-400 font-semibold mb-2">PAN Card</h3>
+                    <p className="text-slate-600 dark:text-gray-300 text-sm">Quick & Easy Registration</p>
                   </motion.div>
                   <motion.div
                     className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 p-4 rounded-xl border border-green-500/30"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <h3 className="text-green-400 font-semibold mb-2">GST</h3>
-                    <p className="text-gray-300 text-sm">Complete Registration</p>
+                    <h3 className="text-green-600 dark:text-green-400 font-semibold mb-2">GST</h3>
+                    <p className="text-slate-600 dark:text-gray-300 text-sm">Complete Registration</p>
                   </motion.div>
                   <motion.div
                     className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-4 rounded-xl border border-purple-500/30"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <h3 className="text-purple-400 font-semibold mb-2">Accounting</h3>
-                    <p className="text-gray-300 text-sm">Professional Services</p>
+                    <h3 className="text-purple-600 dark:text-purple-400 font-semibold mb-2">Accounting</h3>
+                    <p className="text-slate-600 dark:text-gray-300 text-sm">Professional Services</p>
                   </motion.div>
                   <motion.div
                     className="bg-gradient-to-r from-orange-500/20 to-red-500/20 p-4 rounded-xl border border-orange-500/30"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <h3 className="text-orange-400 font-semibold mb-2">Reports</h3>
-                    <p className="text-gray-300 text-sm">Bank Loan Projects</p>
+                    <h3 className="text-orange-600 dark:text-orange-400 font-semibold mb-2">Reports</h3>
+                    <p className="text-slate-600 dark:text-gray-300 text-sm">Bank Loan Projects</p>
                   </motion.div>
                 </div>
                 <div className="text-center">
