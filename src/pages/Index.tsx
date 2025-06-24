@@ -10,7 +10,7 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Nearby Experiences Map */}
+      {/* Nearby Experienccces Map */}
       <NearbyMap />
     </div>
   );
